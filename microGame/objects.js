@@ -163,3 +163,13 @@ class GameElement {
 		this.rotation = degrees;
 	}
 }
+
+function everyGameElementWithTheName(name) {
+	const outputArray = [];
+	objects.forEach((obj) => {
+		if (obj.name === name) {
+			outputArray.push(obj);
+		}
+	})
+	return outputArray;
+}
