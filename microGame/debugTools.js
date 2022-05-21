@@ -25,5 +25,6 @@ function initDebug() {
 	debug_text.style.position = 'absolute';
 	debug_text.style.top = 0;
 	debug_text.style.left = 0;
+	debug_text.style.backgroundColor = '#FFF8'
 	document.body.appendChild(debug_text)
 }
