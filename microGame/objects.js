@@ -1,15 +1,24 @@
 class GameElement {
 	constructor(params) {
-		this.type = (params.type ? params.type : 'Rectangle')
-		if (this.type === 'Image') {
-			this.src = (params.src ? params.src : 'microGame/assets/redblockeyes.png');
-			this.img = new Image();
-			this.img.src = this.src;
+		this.name = (params.name ? params.name : "Unnamed");
+		this.width = (params.width ? params.width : 32);
+		this.height = (params.height ? params.height : 32);
+		this.type = (params.type ? params.type : 'Rectangle');
+		switch (this.type) {
+			case 'Image':
+				this.img = images[(params.src ? params.src : 'Player')];
+				break;
+			case 'Text':
+				this.value = (params.text !== undefined ? params.text : 'Hello World!');
+				break;
+			case 'Number':
+				this.value = (params.number !== undefined ? params.number : 0);
+				this.prefix = (params.prefix !== undefined ? params.prefix : '')
+				break;
 		}
-		this.width = (params.width ? params.width : 10);
-		this.height = (params.height ? params.height : 10);
-		this.x = (params.x !== undefined ? params.x : this.width / 2);
-		this.y = (params.y !== undefined ? params.y : this.height / 2);
+
+		this.x = (params.x !== undefined ? params.x : Math.random() * (cvs.width - this.width) + this.width / 2);
+		this.y = (params.y !== undefined ? params.y : Math.random() * (cvs.height - this.height) + this.height / 2);
 		this.rotation = (params.rotation !== undefined ? params.rotation : 0);
 		this.opacity = (params.opacity !== undefined ? params.opacity : 1);
 		this.physics = (params.physics !== undefined ? params.physics : false);
@@ -23,6 +32,8 @@ class GameElement {
 		this.color = (params.color !== undefined ? params.color : 'black');
 		objects.push(this);
 	}
+
+	// general functions
 	draw() {
 		if (this.rotation !== 0) {
 			ctx.save();
@@ -45,6 +56,11 @@ class GameElement {
 			case "Image":
 				ctx.drawImage(this.img, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
 				break;
+			case "Text":
+			case "Number":
+				ctx.font = this.width + "px Arial"
+				ctx.fillText(this.prefix + this.value, this.x, this.y + this.width)
+				break;
 		}
 		ctx.globalAlpha = 1;
 		if (this.rotation !== 0) {
@@ -57,11 +73,48 @@ class GameElement {
 			this.collideWalls();
 		}
 	}
+
+	delete() {
+		this.deleted = true;
+	}
+
+	// number functions
+	setNumber(value) {
+		if (this.type === 'Number') {
+			this.value = value;
+		}
+	}
+	increaseNumber(value) {
+		if (this.type === 'Number') {
+			this.value += value;
+		}
+	}
+	decreaseNumber(value) {
+		if (this.type === 'Number') {
+			this.value -= value;
+		}
+	}
+	// number functions
+	setText(text) {
+		if (this.type === 'Text') {
+			this.value = text;
+		}
+	}
+	addText(text) {
+		if (this.type === 'Text') {
+			this.value += text;
+		}
+	}
+
+
+	// physics functions
 	emulateVelocities() {
 		this.yvel += this.gravityy
 		this.x += this.xvel;
 		this.y += this.yvel;
 	}
+
+	// collision functions
 	collideWalls() {
 		if (this.x + this.width / 2 > cvs.width) {
 			this.xvel *= -this.bounciness;
@@ -82,6 +135,17 @@ class GameElement {
 			this.xvel *= Math.min(this.friction, 1);
 		}
 	}
+	collideWith(obj) {
+		if (this.x + this.width / 2 > obj.x - obj.width / 2 &&
+			this.y + this.height/ 2 > obj.y - obj.height/ 2 &&
+			this.x - this.width / 2 < obj.x + obj.width / 2 &&
+			this.y - this.height/ 2 < obj.y + obj.height/ 2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// position functions
 	setPosition(x, y) {
 		this.x = x;

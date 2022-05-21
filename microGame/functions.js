@@ -13,3 +13,7 @@ function setGameBackground(bg) {
 function setBodyBackground(bg) {
 	document.body.style.background = bg;
 }
+
+function delay(time) {
+	return new Promise(resolve => setTimeout(resolve, time));
+}

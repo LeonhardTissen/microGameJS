@@ -6,12 +6,18 @@
 	<title>microGameJS</title>
 	<script type="text/javascript" src="microGame/functions.js"></script>
 	<script type="text/javascript" src="microGame/debugTools.js"></script>
+	<script type="text/javascript" src="microGame/assetLoader.js"></script>
 	<script type="text/javascript" src="microGame/inputs.js"></script>
 	<script type="text/javascript" src="microGame/main.js"></script>
 	<script type="text/javascript" src="microGame/objects.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
+		loadSound('Collect', 'microGame/assets/collect.mp3')
+		loadSound('Tada', 'microGame/assets/tada.mp3')
+		loadImage('Player', 'microGame/assets/redblockeyes.png')
+		loadImage('Diamond', 'microGame/assets/diamond.png')
+
 		microGame({
 			width: 1000,
 			height: 700,
@@ -21,27 +27,39 @@
 			debug: true
 		})
 
+		//for (i = 0; i < 20; i ++) {
+		//	new GameElement({
+		//		name: "Ball",
+		//		type: "Circle",
+		//		xvel: Math.random() * 3,
+		//		yvel: Math.random() * 3,
+		//		opacity: Math.random(),
+		//		bounciness: Math.random() * 0.1 + 0.9,
+		//		friction: Math.random() * 0.1 + 0.9,
+		//		width: 100,
+		//		height: 100,
+		//		physics: true,
+		//		collidewalls: true,
+		//		gravityy: 0.15,
+		//		color: randomColor()
+		//	})
+		//}
+		const number = new GameElement({
+			name: "Counter",
+			type: "Number",
+			value: 0,
+			prefix: "Diamonds left: ",
+			x: 10,
+			y: 10,
+			width: 80
+		})
 
-		for (i = 0; i < 100; i ++) {
-			new GameElement({
-				type: "Circle",
-				xvel: Math.random() * 3,
-				yvel: Math.random() * 3,
-				opacity: Math.random(),
-				bounciness: Math.random() * 0.1 + 0.9,
-				friction: Math.random() * 0.1 + 0.9,
-				width: 100,
-				height: 100,
-				physics: true,
-				collidewalls: true,
-				gravityy: 0.15,
-				color: randomColor()
-			})
-		}
-		const testObject = new GameElement({
+		const player = new GameElement({
+			name: "Player",
 			type: "Image",
-			xvel: 3,
-			yvel: 3,
+			src: "Player",
+			x: 500,
+			y: 600,
 			bounciness: 0,
 			friction: 1,
 			width: 100,
@@ -51,22 +69,49 @@
 			gravityy: 0.15
 		})
 
+		function spawnDiamonds(amount) {
+			for (i = 0; i < amount; i ++) {
+				new GameElement({
+					name: "Diamond",
+					type: "Image",
+					src: "Diamond",
+					width: 64,
+					height: 55,
+				})
+			}
+		}
+
+		var level = 0;
+		function nextLevel() {
+			level ++;
+			number.setNumber(level);
+			spawnDiamonds(level);
+			playSound('Tada')
+		}
+		nextLevel();
+
 		function draw() {
 			if (keyPress('ArrowUp')) {
-				testObject.yvel = -10;
-				setGameBackground(randomColor());
-				if (randomNumberBetween(1,3) !== 3) {
-					setBodyBackground(randomColor());
-				} else {
-					setBodyBackground("url(microGame/assets/background.png)")
-				}
+				player.yvel = -10;
 			}
 			if (keyHeld('ArrowRight')) {
-				testObject.xvel += 0.2;
+				player.xvel += 0.2;
 			}
 			if (keyHeld('ArrowLeft')) {
-				testObject.xvel -= 0.2;
+				player.xvel -= 0.2;
 			}
+			objects.forEach((obj) => {
+				if (obj.name === "Diamond") {
+					if (obj.collideWith(player)) {
+						playSound('Collect');
+						obj.delete();
+						number.decreaseNumber(1);
+					}
+					if (number.value === 0) {
+						nextLevel();
+					}
+				}
+			})
 		}
 	</script>
 </body>

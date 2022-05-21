@@ -93,19 +93,41 @@ function resizeMicroGame() {
 }
 
 function clockMicroGame() {
+	// Clear canvas
+	ctx.clearRect(0, 0, cvs.width, cvs.height)
+
+	// If game hasn't loaded yet
+	if (unloadedAssets !== 0) {
+		ctx.beginPath();
+		ctx.arc(
+			cvs.width / 2, 
+			cvs.height / 2, 
+			Math.min(cvs.width, cvs.height) / 4, 
+			Math.PI * 1.5,
+			Math.PI * 1.5 + Math.PI * 2 / totalAssets * (totalAssets - unloadedAssets)
+		);
+		ctx.strokeStyle = "#4D97FF";
+		ctx.lineWidth = Math.min(cvs.width, cvs.height) / 4;
+		ctx.stroke();
+		window.requestAnimationFrame(clockMicroGame);
+		return;
+	}
+
 	// Time and FPS
 	time ++;
 	if (debug_mode) {
 		try {displayDebugText()} catch(e) {}
 	}
 
-	// Clear canvas
-	ctx.clearRect(0, 0, cvs.width, cvs.height)
-
 	// Loop through game objects
-	objects.forEach((obj) => {
-		obj.draw()
-	});
+	for (var o = 0; o < objects.length; o ++) {
+		if (objects[o].deleted) {
+			objects.splice(o, 1)
+			o --;
+		} else {
+			objects[o].draw()
+		}
+	}
 
 	// Custom draw call
 	draw();
