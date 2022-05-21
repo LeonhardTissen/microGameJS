@@ -4,20 +4,40 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>microGameJS</title>
+	<script type="text/javascript" src="microGame/functions.js"></script>
+	<script type="text/javascript" src="microGame/debugTools.js"></script>
+	<script type="text/javascript" src="microGame/inputs.js"></script>
 	<script type="text/javascript" src="microGame/main.js"></script>
 	<script type="text/javascript" src="microGame/objects.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
 		microGame({
-			width: 800,
-			height: 600,
+			width: 1000,
+			height: 700,
 			noscaling: true,
-			pixelated: true,
+			pixelated: false,
 			bodybackground: '#4D97FF',
 			debug: true
 		})
 
+
+		for (i = 0; i < 100; i ++) {
+			new GameElement({
+				type: "Circle",
+				xvel: Math.random() * 3,
+				yvel: Math.random() * 3,
+				opacity: Math.random(),
+				bounciness: Math.random() * 0.1 + 0.9,
+				friction: Math.random() * 0.1 + 0.9,
+				width: 100,
+				height: 100,
+				physics: true,
+				collidewalls: true,
+				gravityy: 0.15,
+				color: randomColor()
+			})
+		}
 		const testObject = new GameElement({
 			type: "Image",
 			xvel: 3,
@@ -25,16 +45,21 @@
 			bounciness: 0,
 			friction: 1,
 			width: 100,
-			height: 100
+			height: 100,
+			physics: true,
+			collidewalls: true,
+			gravityy: 0.15
 		})
 
 		function draw() {
-			testObject.yvel += 0.15;
-			testObject.physics();
-			testObject.collideWalls();
-			testObject.rotateClockwise(0.02)
 			if (keyPress('ArrowUp')) {
 				testObject.yvel = -10;
+				setGameBackground(randomColor());
+				if (randomNumberBetween(1,3) === 3) {
+					setBodyBackground(randomColor());
+				} else {
+					setBodyBackground("url()")
+				}
 			}
 			if (keyHeld('ArrowRight')) {
 				testObject.xvel += 0.2;

@@ -1,15 +1,10 @@
 let cvs;
 let ctx;
 let time = 0;
-let last_frame = 0;
-let avg_frame_rate = [];
 let objects = [];
-let keys_held = new Set();
-let keys_pressed = new Set();
+let noscaling = false;
 
-let debug_mode = false;
 let frame_accuracy = 100;
-let debug_text;
 
 function microGame(params) {
 	// Variables
@@ -18,7 +13,6 @@ function microGame(params) {
 	let gamebackground = 'white';
 	let bodybackground = 'url("microGame/assets/background.png")';
 	let fps = 60;
-	let noscaling = false;
 	let pixelated = false;
 
 	// Handle params
@@ -64,7 +58,7 @@ function microGame(params) {
 	cvscontainer.style.width = width + "px";
 	cvscontainer.style.height=height + "px";
 	cvs.id = 'microGame'
-	cvs.style.backgroundColor = gamebackground;
+	cvs.style.background = gamebackground;
 	cvs.style.imageRendering = (pixelated ? 'pixelated' : '')
 	cvs.style.boxShadow = '0px 0px 50px black'
 	cvscontainer.appendChild(cvs)
@@ -78,28 +72,16 @@ function microGame(params) {
 
 	// FPS for Debug
 	if (debug_mode) {
-		debug_text = document.createElement('p')
-		debug_text.style.position = 'absolute';
-		debug_text.style.top = 0;
-		debug_text.style.left = 0;
-		cvscontainer.appendChild(debug_text)
+		try {initDebug()} catch(err) {}
 	}
 
 	// Window scaling
-	if (!noscaling) {
-		document.body.onresize = resizeMicroGame;
-		resizeMicroGame();
-	}
+	document.body.onresize = resizeMicroGame;
+	resizeMicroGame();
 
 	// More events
-	document.body.onkeydown = function() {
-		if (event.repeat) return;
-		keys_held.add(event.key);
-		keys_pressed.add(event.key);
-	}
-	document.body.onkeyup = function() {
-		keys_held.delete(event.key);
-	}
+	document.body.onkeydown = keyDown;
+	document.body.onkeyup = keyUp;
 
 	// Start the clock
 	window.requestAnimationFrame(clockMicroGame);
@@ -107,14 +89,14 @@ function microGame(params) {
 }
 
 function resizeMicroGame() {
-	cvs.style.transform = 'scale(' + Math.min(window.innerWidth/cvs.width, window.innerHeight/cvs.height) + ')';
+	cvs.style.transform = 'scale(' + Math.min((noscaling === true ? 1 : 9999),Math.min(window.innerWidth/cvs.width, window.innerHeight/cvs.height)) + ')';
 }
 
 function clockMicroGame() {
 	// Time and FPS
 	time ++;
 	if (debug_mode) {
-		displayDebugText();
+		try {displayDebugText()} catch(e) {}
 	}
 
 	// Clear canvas
@@ -133,29 +115,4 @@ function clockMicroGame() {
 
 	// Request next frame
 	window.requestAnimationFrame(clockMicroGame);
-}
-
-// debug 
-function displayDebugText() {
-	const pf = performance.now()
-	avg_frame_rate.push(1000 / (pf - last_frame))
-	if (avg_frame_rate.length > frame_accuracy) {
-		avg_frame_rate.shift()
-	}
-	let avg = 0;
-	avg_frame_rate.forEach((fps) => {
-		avg += fps
-	})
-	debug_text.innerText = `${Math.floor(avg / avg_frame_rate.length)} FPS
-	Keys Held: [${Array.from(keys_held)}] 
-	Keys Pressed: [${Array.from(keys_pressed)}]
-	Object Count: ${objects.length}`;
-	last_frame = pf;
-}
-
-function keyPress(type) {
-	return keys_pressed.has(type);
-}
-function keyHeld(type) {
-	return keys_held.has(type);
 }
