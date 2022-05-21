@@ -28,11 +28,11 @@ function microGame(params) {
 	if (params.height > 1) {
 		height = params.height;
 	}
-	if (params.gameBackground) {
-		gamebackground = params.gameBackground;
+	if (params.gamebackground) {
+		gamebackground = params.gamebackground;
 	} 
-	if (params.bodyBackground) {
-		bodybackground = params.bodyBackground;
+	if (params.bodybackground) {
+		bodybackground = params.bodybackground;
 	}
 	if (params.fps) {
 		fps = params.fps;
