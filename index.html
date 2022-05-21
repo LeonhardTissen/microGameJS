@@ -32,6 +32,7 @@
 			testObject.yvel += 0.15;
 			testObject.physics();
 			testObject.collideWalls();
+			testObject.rotateClockwise(0.02)
 			if (keyPress('ArrowUp')) {
 				testObject.yvel = -10;
 			}

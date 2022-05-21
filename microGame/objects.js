@@ -10,6 +10,7 @@ class GameElement {
 		this.height = (params.height ? params.height : 10);
 		this.x = (params.x !== undefined ? params.x : this.width / 2);
 		this.y = (params.y !== undefined ? params.y : this.height / 2);
+		this.rotation = (params.rotation !== undefined ? params.rotation : 0)
 		this.bounciness = (params.bounciness !== undefined ? params.bounciness : 0.75);
 		this.friction = (params.friction !== undefined ? params.friction : 0.75);
 		this.yvel = (params.yvel ? params.yvel : 0);
@@ -18,6 +19,12 @@ class GameElement {
 		objects.push(this);
 	}
 	draw() {
+		if (this.rotation !== 0) {
+			ctx.save();
+			ctx.translate(this.x, this.y);
+			ctx.rotate(this.rotation);
+			ctx.translate(-this.x, -this.y);
+		}
 		switch (this.type) {
 			case "Circle":
 				ctx.beginPath();
@@ -32,6 +39,13 @@ class GameElement {
 			case "Image":
 				ctx.drawImage(this.img, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
 				break;
+		}
+		if (this.rotation !== 0) {
+			ctx.restore();
+		}
+		if (debug_mode) {
+			ctx.strokeStyle = 'green';
+			ctx.strokeRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
 		}
 	}
 	physics() {
@@ -57,5 +71,11 @@ class GameElement {
 			this.y = this.height / 2;
 			this.xvel *= Math.min(this.friction, 1);
 		}
+	}
+	rotateClockwise(degrees) {
+		this.rotation += degrees;
+	}
+	rotateCounterClosewise(degrees) {
+		this.rotation -= degrees;
 	}
 }
