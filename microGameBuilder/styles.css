@@ -20,6 +20,7 @@ pre {
 #outputcode {
 	pointer-events: none;
 	border: none;
+	overflow: hidden;
 }
 ::selection {
 	background: #BBBBBB;

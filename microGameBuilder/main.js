@@ -1,8 +1,7 @@
-let code = ""
-
 const inputcode = document.getElementById('inputcode');
 const outputcode = document.getElementById('outputcode');
 const gamewindow = document.getElementById('gamewindow');
+let code;
 let iframe;
 inputcode.oninput = updateCode;
 inputcode.onscroll = scrollCode;
@@ -23,7 +22,14 @@ function runCode() {
 	iframe.onload = function() {
 		const script = document.createElement('script');
 		const sourcecode = inputcode.innerHTML.replaceAll('&lt;','<').replaceAll('&gt;','>');
-		script.innerHTML = sourcecode;
+		const lines = sourcecode.split("\n");
+		var trimmedcode = ""
+		lines.forEach((line) => {
+			if (!line.startsWith('//') && !line.includes('<br>')) {
+				trimmedcode += line + "\n";
+			}
+		});
+		script.innerHTML = trimmedcode;
 		iframe.contentDocument.body.appendChild(script);
 	}
 }
@@ -32,11 +38,18 @@ runCode();
 function scrollCode() {
 	outputcode.scrollLeft = inputcode.scrollLeft;
 	outputcode.scrollTop = inputcode.scrollTop;
+	fixScroll();
+}
+
+function fixScroll() {
+	inputcode.scrollTop = Math.min(inputcode.scrollTop, outputcode.scrollTop);
+	inputcode.scrollLeft = Math.min(inputcode.scrollLeft, outputcode.scrollLeft);
 }
 
 function updateCode() {
 	outputcode.classList.remove('prettyprinted')
 	outputcode.innerHTML = inputcode.innerHTML;
-	PR.prettyPrint()
+	PR.prettyPrint();
+	fixScroll();
 }
 updateCode();

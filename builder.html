@@ -10,11 +10,11 @@
 <body>
 <pre spellcheck="false" contenteditable="true" id="inputcode">
 // All necessary assets are preloaded
-loadSound('Collect', 'microGame/assets/collect.mp3');
-loadSound('Tada', 'microGame/assets/tada.mp3');
-loadImage('Player', 'microGame/assets/redblockeyes.png');
-loadImage('Diamond', 'microGame/assets/diamond.png');
-loadFont('Signika', 'microGame/assets/SignikaNegative-VariableFont_wght.ttf');
+loadSound('Collect', 'microGame/assets/collect.mp3')
+loadSound('Tada', 'microGame/assets/tada.mp3')
+loadImage('Player', 'microGame/assets/redblockeyes.png')
+loadImage('Diamond', 'microGame/assets/diamond.png')
+loadFont('Signika', 'microGame/assets/SignikaNegative-VariableFont_wght.ttf')
 
 // Creation of the game window
 microGame({
@@ -24,7 +24,7 @@ microGame({
 	pixelated: false,
 	bodybackground: '#4D97FF',
 	debug: true
-});
+})
 
 // Counter in the top left
 const diamondsleft = new GameElement({
@@ -37,7 +37,7 @@ const diamondsleft = new GameElement({
 	x: 10,
 	y: 10,
 	width: 80
-});
+})
 
 // Playable character
 const player = new GameElement({
@@ -53,7 +53,7 @@ const player = new GameElement({
 	physics: true,
 	collidewalls: true,
 	gravityy: 0.15
-});
+})
 
 // Callable function for spawning x diamonds
 function spawnDiamonds(amount) {
@@ -64,33 +64,33 @@ function spawnDiamonds(amount) {
 			src: "Diamond",
 			width: 64,
 			height: 55
-		});
+		})
 	}
 }
 
-var level = 0;
+var level = 0
 // custom function for going to the next level
 function nextLevel() {
-	level += 1;
-	diamondsleft.setNumber(level);
-	spawnDiamonds(level);
-	playSound('Tada');
+	level += 1
+	diamondsleft.setNumber(level)
+	spawnDiamonds(level)
+	playSound('Tada')
 }
 // Immediately ascend to level 1
-nextLevel();
+nextLevel()
 
 function draw() {
 	// Set the y velocity when pressing up
 	if (keyPress('ArrowUp')) {
 		player.yvel = -10;
-	};
+	}
 	// Change the x velocity when holding left or right
 	if (keyHeld('ArrowRight')) {
 		player.xvel += 0.2;
-	};
+	}
 	if (keyHeld('ArrowLeft')) {
 		player.xvel -= 0.2;
-	};
+	}
 	// For every diamond
 	everyGameElementWithTheName("Diamond").forEach((diamond) => {
 		// Check if colliding with player
@@ -98,14 +98,17 @@ function draw() {
 			playSound('Collect');
 			diamond.delete();
 			diamondsleft.decreaseNumber(1);
-		};
-	});
+		}
+	})
 
 	// If all diamonds were collected, go to next level
 	if (diamondsleft.value === 0) {
-		nextLevel();
-	};
-};
+		nextLevel()
+	}
+}
+
+
+
 </pre>
 	<pre spellcheck="false" class="prettyprint lang-js" id="outputcode"></pre>
 	<div id="gamewindow"></div>
