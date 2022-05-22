@@ -15,7 +15,13 @@ function loadSound(name, path) {
 	}
 	newSound.src = path;
 	newSound.volume = 0;
-	newSound.play()
+	try {
+		newSound.play()
+	} catch (err) {
+		newSound.volume = 1;
+		unloadedAssets --;
+		this.onpause = function() {}
+	}
 }
 function playSound(name) {
 	if (sounds[name].currentTime !== 0) {
