@@ -16,7 +16,8 @@ function displayDebugText() {
 	debug_text.innerText = `${Math.floor(avg / avg_frame_rate.length)} FPS
 	Keys Held: [${Array.from(keys_held)}] 
 	Keys Pressed: [${Array.from(keys_pressed)}]
-	Object Count: ${objects.length}`;
+	Object Count: ${objects.length}
+	Camera: ${camerax} ${cameray}`;
 	last_frame = pf;
 }
 

@@ -16,12 +16,13 @@ microGame({
 })
 
 // Counter in the top left
-const number = new GameElement({
+const diamondsleft = new GameElement({
 	name: "Counter",
 	type: "Number",
 	value: 0,
 	prefix: "Diamonds left: ",
 	font: "Signika",
+	parallax: 0,
 	x: 10,
 	y: 10,
 	width: 80
@@ -57,9 +58,10 @@ function spawnDiamonds(amount) {
 }
 
 var level = 0;
+// custom function for going to the next level
 function nextLevel() {
 	level += 1;
-	number.setNumber(level);
+	diamondsleft.setNumber(level);
 	spawnDiamonds(level);
 	playSound('Tada')
 }
@@ -78,14 +80,18 @@ function draw() {
 	if (keyHeld('ArrowLeft')) {
 		player.xvel -= 0.2;
 	}
+	// For every diamond
 	everyGameElementWithTheName("Diamond").forEach((diamond) => {
+		// Check if colliding with player
 		if (diamond.collideWith(player)) {
 			playSound('Collect');
 			diamond.delete();
-			number.decreaseNumber(1);
-		};
-		if (number.value === 0) {
-			nextLevel();
+			diamondsleft.decreaseNumber(1);
 		};
 	});
+
+	// If all diamonds were collected, go to next level
+	if (diamondsleft.value === 0) {
+		nextLevel();
+	};
 }

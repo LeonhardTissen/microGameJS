@@ -79,7 +79,7 @@ function microGame(params) {
 	document.body.onresize = resizeMicroGame;
 	resizeMicroGame();
 
-	// More events
+	// Input events
 	document.body.onkeydown = keyDown;
 	document.body.onkeyup = keyUp;
 
@@ -118,6 +118,10 @@ function clockMicroGame() {
 	if (debug_mode) {
 		try {displayDebugText()} catch(e) {}
 	}
+
+	try {
+		adjustCameraPosition()
+	} catch (err) {}
 
 	// Loop through game objects
 	for (var o = 0; o < objects.length; o ++) {

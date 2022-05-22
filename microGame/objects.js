@@ -19,8 +19,9 @@ class GameElement {
 				break;
 		}
 
-		this.x = (params.x !== undefined ? params.x : Math.random() * (cvs.width - this.width) + this.width / 2);
-		this.y = (params.y !== undefined ? params.y : Math.random() * (cvs.height - this.height) + this.height / 2);
+		this.x = (params.x !== undefined ? params.x : Math.random() * (cvs.width - this.width) + this.width / 2 + camerax);
+		this.y = (params.y !== undefined ? params.y : Math.random() * (cvs.height - this.height) + this.height / 2 + cameray);
+		this.parallax = (params.parallax !== undefined ? params.parallax : 1)
 		this.rotation = (params.rotation !== undefined ? params.rotation : 0);
 		this.opacity = (params.opacity !== undefined ? params.opacity : 1);
 		this.physics = (params.physics !== undefined ? params.physics : false);
@@ -44,25 +45,26 @@ class GameElement {
 			ctx.translate(-this.x, -this.y);
 		}
 		ctx.globalAlpha = this.opacity;
+		const x = this.x - camerax * this.parallax;
+		const y = this.y - cameray * this.parallax;
 		switch (this.type) {
 			case "Circle":
 				ctx.beginPath();
 				ctx.fillStyle = this.color;
-				ctx.ellipse(this.x, this.y, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
+				ctx.ellipse(x, y, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
 				ctx.fill()
 				break;
 			case "Rectangle":
 				ctx.fillStyle = this.color;
-				ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
+				ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
 				break;
 			case "Image":
-				ctx.drawImage(this.img, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
+				ctx.drawImage(this.img, x - this.width / 2, y - this.height / 2, this.width, this.height)
 				break;
 			case "Text":
 			case "Number":
 				ctx.font = this.width + "px " + this.font;
-				console.log(ctx.font);
-				ctx.fillText(this.prefix + this.value, this.x, this.y + this.width)
+				ctx.fillText(this.prefix + this.value, x, y + this.width)
 				break;
 		}
 		ctx.globalAlpha = 1;
@@ -119,22 +121,24 @@ class GameElement {
 
 	// collision functions
 	collideWalls() {
-		if (this.x + this.width / 2 > cvs.width) {
+		const x = this.x - camerax * this.parallax;
+		const y = this.y - cameray * this.parallax;
+		if (x + this.width / 2 > cvs.width) {
 			this.xvel *= -this.bounciness;
-			this.x = cvs.width - this.width / 2;
+			this.x = cvs.width - this.width / 2 + camerax;
 			this.yvel *= Math.min(this.friction, 1);
-		} else if (this.x - this.width / 2 < 0) {
+		} else if (x - this.width / 2 < 0) {
 			this.xvel *= -this.bounciness;
-			this.x = this.width / 2;
+			this.x = this.width / 2 + camerax;
 			this.yvel *= Math.min(this.friction, 1);
 		}
-		if (this.y + this.height / 2 > cvs.height) {
+		if (y + this.height / 2 > cvs.height) {
 			this.yvel *= -this.bounciness;
-			this.y = cvs.height - this.height / 2;
+			this.y = cvs.height - this.height / 2 + cameray;
 			this.xvel *= Math.min(this.friction, 1);
-		} else if (this.y - this.height / 2 < 0) {
+		} else if (y - this.height / 2 < 0) {
 			this.yvel *= -this.bounciness;
-			this.y = this.height / 2;
+			this.y = this.height / 2 + cameray;
 			this.xvel *= Math.min(this.friction, 1);
 		}
 	}
