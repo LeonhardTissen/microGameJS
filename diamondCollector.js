@@ -3,6 +3,7 @@ loadSound('Collect', 'microGame/assets/collect.mp3')
 loadSound('Tada', 'microGame/assets/tada.mp3')
 loadImage('Player', 'microGame/assets/redblockeyes.png')
 loadImage('Diamond', 'microGame/assets/diamond.png')
+loadFont('Signika', 'microGame/assets/SignikaNegative-VariableFont_wght.ttf')
 
 // Creation of the game window
 microGame({
@@ -20,6 +21,7 @@ const number = new GameElement({
 	type: "Number",
 	value: 0,
 	prefix: "Diamonds left: ",
+	font: "Signika",
 	x: 10,
 	y: 10,
 	width: 80

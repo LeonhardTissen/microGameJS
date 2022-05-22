@@ -36,3 +36,13 @@ function loadImage(name, path) {
 	images[name] = newImage;
 	newImage.src = path;
 }
+
+function loadFont(name, path) {
+	unloadedAssets ++;
+	totalAssets ++;
+	const newFont = new FontFace(name, 'url(' + path + ')');
+	newFont.load().then(function(loaded_face) {
+		unloadedAssets --;
+		document.fonts.add(loaded_face);
+	})
+}

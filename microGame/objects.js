@@ -10,10 +10,12 @@ class GameElement {
 				break;
 			case 'Text':
 				this.value = (params.text !== undefined ? params.text : 'Hello World!');
+				this.font = (params.font !== undefined ? params.font : 'Arial');
 				break;
 			case 'Number':
 				this.value = (params.number !== undefined ? params.number : 0);
-				this.prefix = (params.prefix !== undefined ? params.prefix : '')
+				this.prefix = (params.prefix !== undefined ? params.prefix : '');
+				this.font = (params.font !== undefined ? params.font : 'Arial');
 				break;
 		}
 
@@ -58,7 +60,8 @@ class GameElement {
 				break;
 			case "Text":
 			case "Number":
-				ctx.font = this.width + "px Arial"
+				ctx.font = this.width + "px " + this.font;
+				console.log(ctx.font);
 				ctx.fillText(this.prefix + this.value, this.x, this.y + this.width)
 				break;
 		}
