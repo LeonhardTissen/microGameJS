@@ -44,3 +44,15 @@ pre {
 	background-color: #000;
 	border: none;
 }
+.com {
+	color: #999 !important;
+}
+.kwd {
+	color: #F30 !important;
+}
+.typ {
+	color: #08F !important;
+}
+.lit {
+	color: #F0F !important;
+}
