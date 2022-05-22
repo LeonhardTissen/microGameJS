@@ -27,7 +27,9 @@ function playSound(name) {
 	if (sounds[name].currentTime !== 0) {
 		sounds[name].currentTime = 0;
 	}
-	sounds[name].play();
+	try {
+		sounds[name].play();
+	} catch (err) {}
 }
 
 let images = {};
