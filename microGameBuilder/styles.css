@@ -1,0 +1,45 @@
+body {
+	background-color: #111;
+}
+pre {
+	margin: 0;
+	filter:invert(1);
+	font-size:24px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 50vw;
+	overflow: auto;
+}
+#inputcode {
+	outline: none;
+	color: #EEEEEE;
+	caret-color: black;
+}
+#outputcode {
+	pointer-events: none;
+	border: none;
+}
+::selection {
+	background: #BBBBBB;
+}
+#gamewindow {
+	top: 0;
+	right: 0;
+	height: 100vh;
+	width: 50vw;
+	overflow: hidden;
+	position: fixed;
+	background-color: #000;
+}
+#gamewindow iframe {
+	top: 0;
+	right: 0;
+	height: 100vh;
+	width: 50vw;
+	overflow: hidden;
+	position: fixed;
+	background-color: #000;
+	border: none;
+}

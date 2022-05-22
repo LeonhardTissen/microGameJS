@@ -21,8 +21,10 @@ class GameElement {
 
 		this.x = (params.x !== undefined ? params.x : Math.random() * (cvs.width - this.width) + this.width / 2 + camerax);
 		this.y = (params.y !== undefined ? params.y : Math.random() * (cvs.height - this.height) + this.height / 2 + cameray);
-		this.parallax = (params.parallax !== undefined ? params.parallax : 1)
+		this.parallax = (params.parallax !== undefined ? params.parallax : 1);
 		this.rotation = (params.rotation !== undefined ? params.rotation : 0);
+		this.mirroredx = (params.mirroredx !== undefined ? params.mirroredx : false);
+		this.mirroredy = (params.mirroredy !== undefined ? params.mirroredy : false);
 		this.opacity = (params.opacity !== undefined ? params.opacity : 1);
 		this.physics = (params.physics !== undefined ? params.physics : false);
 		this.gravityy = (params.gravityy !== undefined ? params.gravityy : 0);
