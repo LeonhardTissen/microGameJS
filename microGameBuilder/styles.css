@@ -1,7 +1,11 @@
 body {
 	background-color: #111;
 }
-pre {
+textarea {
+	border: none;
+	overflow-x: scroll;
+}
+.code {
 	margin: 0;
 	filter:invert(1);
 	font-size:24px;
@@ -11,6 +15,8 @@ pre {
 	height: 100vh;
 	width: 50vw;
 	overflow: auto;
+	tab-size: 53px;
+	resize: none;
 }
 #inputcode {
 	outline: none;
@@ -62,4 +68,32 @@ pre {
 }
 .lit {
 	color: #F0F !important;
+}
+.contextMenu {
+	animation: contextMenuAppear 0.2s linear;
+	position: fixed;
+	background-color: #222;
+	width: 200px;
+}
+.contextMenuItem {
+	text-align: left;
+	width: 200px;
+	height: 20px;
+	font-size: 15px;
+	background-color: #222;
+	color: white;
+	border: none;
+	transition: background-color 0.2s ease-out;
+	cursor: pointer;
+}
+.contextMenuItem:hover {
+	background-color: #333;
+}
+@keyframes contextMenuAppear {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
