@@ -22,8 +22,9 @@ function keyDown() {
 	if (event.key === 's' && event.ctrlKey) {
 		event.preventDefault();
 		runCode();
-	}
-	if (event.key === 'Tab') { //tab was pressed
+	} else if (event.key === 'o' && event.ctrlKey) {
+		loadCode(prompt('Enter URL'))
+	} else if (event.key === 'Tab') { //tab was pressed
         var newCaretPosition;
         newCaretPosition = inputcode.getCaretPosition() + "	".length;
         inputcode.value = inputcode.value.substring(0, inputcode.getCaretPosition()) + "	" + inputcode.value.substring(inputcode.getCaretPosition(), inputcode.value.length);
@@ -34,23 +35,39 @@ function keyDown() {
 }
 
 function runCode() {
-	gamewindow.innerHTML = `<iframe width="100" height="100" src="emulation.html"></iframe>`
+	console.clear()
+	gamewindow.innerHTML = `<iframe width="100" height="100" src="emulation.html"></iframe><div class="microGameLogo"><div class="verticalSegment clampRight"><div class="horizontalSegment clampLeftHarder clampOffsetTop"><div class="verticalSegment clampRightHarder"><div class="horizontalSegment clampLeftHarder clampOffsetTop"></div></div></div></div><div class="horizontalSegment clampLeft"><div class="verticalSegment clampRightHarder clampOffsetRight"><div class="horizontalSegment clampLeftHarder"><div class="verticalSegment clampRightHarder clampOffsetRight"></div></div></div></div></div>`
 	iframe = document.querySelector('#gamewindow iframe')
+	loading = document.querySelector('#gamewindow .microGameLogo');
 	iframe.onload = function() {
-		const script = document.createElement('script');
-		const sourcecode = inputcode.value.replaceAll('&lt;','<').replaceAll('&gt;','>');
-		const lines = sourcecode.split('\n');
-		var trimmedcode = '';
-		lines.forEach((line) => {
-			if (!line.startsWith('//')) {
-				trimmedcode += line.replaceAll('<br>','') + "\n";
-			}
-		});
-		script.innerHTML = trimmedcode;
-		iframe.contentDocument.body.appendChild(script);
-	}
-}
+		setTimeout(function() {
+			loading.remove();
+			const script = document.createElement('script');
+			const sourcecode = inputcode.value.replaceAll('&lt;','<').replaceAll('&gt;','>');
+			const lines = sourcecode.split('\n');
+			var trimmedcode = '';
+			lines.forEach((line) => {
+				if (!line.startsWith('//')) {
+					trimmedcode += line.replaceAll('<br>','') + "\n";
+				}
+			});
+			script.innerHTML = trimmedcode;
+			iframe.contentDocument.body.appendChild(script);
+		}, 300)
+	};
+};
 runCode();
+
+function loadCode(url) {
+	if (!url) return;
+	fetch(url).then((response) => {
+		response.text().then((text) => {
+			inputcode.value = text;
+			updateCode();
+			runCode();
+		})
+	})
+}
 
 function scrollCode() {
 	outputcode.scrollLeft = inputcode.scrollLeft;

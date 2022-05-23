@@ -17,3 +17,12 @@ function setBodyBackground(bg) {
 function delay(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
+
+function restart() {
+	gamerunning = false;
+	location.reload();
+}
+
+function alert(message) {
+	console.log(message);
+}

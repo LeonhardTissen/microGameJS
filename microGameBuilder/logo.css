@@ -1,0 +1,75 @@
+.microGameLogo {
+	position: fixed;
+	width: 200px;
+	height: 200px;
+	top: 50vh;
+	right: 25vw;
+	transform: translate(100px, -100px);
+}
+.microGameLogo .horizontalSegment, .microGameLogo .verticalSegment {
+	background-color: #3D78CC;
+	border-radius: 15px;
+	min-width: 30px;
+	min-height: 30px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	overflow: visible;
+	transform-origin: calc(100% - 15px) 15px;
+}
+.microGameLogo .horizontalSegment {
+	width: 100px;
+}
+.microGameLogo .verticalSegment {
+	height: 100px;
+}
+.microGameLogo .clampRight {
+	animation: clampRight 0.8s alternate ease-in-out infinite;
+}
+.microGameLogo .clampLeft {
+	animation: clampLeft 0.8s alternate ease-in-out infinite;
+}
+.microGameLogo .clampRightHarder {
+	animation: clampRightHarder 0.8s alternate ease-in-out infinite;
+}
+.microGameLogo .clampLeftHarder {
+	animation: clampLeftHarder 0.8s alternate ease-in-out infinite;
+}
+.microGameLogo .clampOffsetRight {
+	margin-right: 70px;
+}
+.microGameLogo .clampOffsetTop {
+	margin-top: 70px;
+}
+@keyframes clampRight {
+	from {
+		transform: rotateZ(0deg);
+	}
+	to {
+		transform: rotateZ(30deg);
+	}
+}
+@keyframes clampLeft {
+	from {
+		transform: rotateZ(0deg);
+	}
+	to {
+		transform: rotateZ(-30deg);
+	}
+}
+@keyframes clampRightHarder {
+	from {
+		transform: rotateZ(0deg);
+	}
+	to {
+		transform: rotateZ(60deg);
+	}
+}
+@keyframes clampLeftHarder {
+	from {
+		transform: rotateZ(0deg);
+	}
+	to {
+		transform: rotateZ(-60deg);
+	}
+}

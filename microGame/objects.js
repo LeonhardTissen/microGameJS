@@ -7,6 +7,8 @@ class GameElement {
 		switch (this.type) {
 			case 'Image':
 				this.img = images[(params.src ? params.src : 'Player')];
+				this.frames = (params.frames !== undefined ? params.frames : 1);
+				this.frametime = (params.frametime !== undefined ? params.frametime : 1);
 				break;
 			case 'Text':
 				this.value = (params.text !== undefined ? params.text : 'Hello World!');
@@ -40,9 +42,10 @@ class GameElement {
 
 	// general functions
 	draw() {
-		if (this.rotation !== 0) {
+		if (this.rotation !== 0 || this.mirroredx || this.mirroredy) {
 			ctx.save();
 			ctx.translate(this.x, this.y);
+			ctx.scale(this.mirroredx ? -1 : 1, this.mirroredy ? -1 : 1)
 			ctx.rotate(this.rotation);
 			ctx.translate(-this.x, -this.y);
 		}
@@ -61,16 +64,26 @@ class GameElement {
 				ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
 				break;
 			case "Image":
-				ctx.drawImage(this.img, x - this.width / 2, y - this.height / 2, this.width, this.height)
+				ctx.imageSmoothingEnabled = false;
+				ctx.drawImage(this.img, 
+					(Math.floor(time / this.frametime) % this.frames) * this.img.width / this.frames, 
+					0, 
+					this.img.width / this.frames, 
+					this.img.height,
+					x - this.width / 2,
+					y - this.height / 2, 
+					this.width, 
+					this.height)
 				break;
 			case "Text":
 			case "Number":
+				ctx.fillStyle = this.color;
 				ctx.font = this.width + "px " + this.font;
 				ctx.fillText(this.prefix + this.value, x, y + this.width)
 				break;
 		}
 		ctx.globalAlpha = 1;
-		if (this.rotation !== 0) {
+		if (this.rotation !== 0 || this.mirroredx || this.mirroredy) {
 			ctx.restore();
 		}
 		if (this.physics) {
@@ -91,12 +104,12 @@ class GameElement {
 			this.value = value;
 		}
 	}
-	increaseNumber(value) {
+	increaseNumber(value = 1) {
 		if (this.type === 'Number') {
 			this.value += value;
 		}
 	}
-	decreaseNumber(value) {
+	decreaseNumber(value = 1) {
 		if (this.type === 'Number') {
 			this.value -= value;
 		}

@@ -3,17 +3,19 @@ let ctx;
 let time = 0;
 let objects = [];
 let noscaling = false;
+let pixelated = false;
 
 let frame_accuracy = 100;
+let game_running = false;
 
 function microGame(params) {
+	console.clear()
 	// Variables
 	let width = 512;
 	let height = 512;
 	let gamebackground = 'white';
 	let bodybackground = 'url("microGame/assets/background.png")';
 	let fps = 60;
-	let pixelated = false;
 
 	// Handle params
 	if (params.width > 1) {
@@ -84,6 +86,7 @@ function microGame(params) {
 	document.body.onkeyup = keyUp;
 
 	// Start the clock
+	gamerunning = true;
 	window.requestAnimationFrame(clockMicroGame);
 	return ctx;
 }
@@ -110,6 +113,10 @@ function clockMicroGame() {
 		ctx.lineWidth = Math.min(cvs.width, cvs.height) / 4;
 		ctx.stroke();
 		window.requestAnimationFrame(clockMicroGame);
+		return;
+	}
+
+	if (!gamerunning) {
 		return;
 	}
 
