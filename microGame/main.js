@@ -7,13 +7,13 @@ let pixelated = false;
 
 let frame_accuracy = 100;
 let game_running = false;
+let gamebackground = 'white';
 
 function microGame(params) {
 	console.clear()
 	// Variables
 	let width = 512;
 	let height = 512;
-	let gamebackground = 'white';
 	let bodybackground = 'url("microGame/assets/background.png")';
 	let fps = 60;
 
@@ -60,7 +60,7 @@ function microGame(params) {
 	cvscontainer.style.width = width + "px";
 	cvscontainer.style.height=height + "px";
 	cvs.id = 'microGame'
-	cvs.style.background = gamebackground;
+	cvs.style.background = bodybackground;
 	cvs.style.imageRendering = (pixelated ? 'pixelated' : '')
 	cvs.style.boxShadow = '0px 0px 50px black'
 	cvscontainer.appendChild(cvs)
@@ -74,12 +74,35 @@ function microGame(params) {
 
 	// FPS for Debug
 	if (debug_mode) {
-		try {initDebug()} catch(err) {}
+		initDebug();
 	}
 
 	// Window scaling
 	document.body.onresize = resizeMicroGame;
 	resizeMicroGame();
+
+	// Fullscreen button
+	const fullscreenbutton = document.createElement('div');
+	fullscreenbutton.innerHTML = `<svg 
+	width="80" height="80" 
+	viewbox="0 0 10 10" 
+	style="cursor:pointer;position:fixed;top:10px;right:10px;filter:drop-shadow(5px 5px 5px #0006);"
+	onmouseover="this.style.opacity = 0.5;"
+	onmouseout="this.style.opacity = 1;"
+	onclick="cvs.requestFullscreen();">
+		<rect fill="white" x="0" y="0" width="3" height="1"></rect>
+		<rect fill="white" x="0" y="0" width="1" height="3"></rect>
+
+		<rect fill="white" x="7" y="0" width="3" height="1"></rect>
+		<rect fill="white" x="9" y="0" width="1" height="3"></rect>
+
+		<rect fill="white" x="0" y="9" width="3" height="1"></rect>
+		<rect fill="white" x="0" y="7" width="1" height="3"></rect>
+
+		<rect fill="white" x="7" y="9" width="3" height="1"></rect>
+		<rect fill="white" x="9" y="7" width="1" height="3"></rect>
+	</svg>`
+	document.body.appendChild(fullscreenbutton)
 
 	// Input events
 	document.body.onkeydown = keyDown;
@@ -97,7 +120,8 @@ function resizeMicroGame() {
 
 function clockMicroGame() {
 	// Clear canvas
-	ctx.clearRect(0, 0, cvs.width, cvs.height)
+	ctx.fillStyle = gamebackground;
+	ctx.fillRect(0, 0, cvs.width, cvs.height)
 
 	// If game hasn't loaded yet
 	if (unloadedAssets !== 0) {

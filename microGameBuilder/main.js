@@ -36,6 +36,7 @@ function keyDown() {
 
 function runCode() {
 	console.clear()
+	saveCode();
 	gamewindow.innerHTML = `<iframe width="100" height="100" src="emulation.html"></iframe><div class="microGameLogo"><div class="verticalSegment clampRight"><div class="horizontalSegment clampLeftHarder clampOffsetTop"><div class="verticalSegment clampRightHarder"><div class="horizontalSegment clampLeftHarder clampOffsetTop"></div></div></div></div><div class="horizontalSegment clampLeft"><div class="verticalSegment clampRightHarder clampOffsetRight"><div class="horizontalSegment clampLeftHarder"><div class="verticalSegment clampRightHarder clampOffsetRight"></div></div></div></div></div>`
 	iframe = document.querySelector('#gamewindow iframe')
 	loading = document.querySelector('#gamewindow .microGameLogo');
@@ -56,12 +57,15 @@ function runCode() {
 		}, 300)
 	};
 };
-runCode();
 
 function loadCode(url) {
 	if (!url) return;
 	fetch(url).then((response) => {
 		response.text().then((text) => {
+			if (text.startsWith('CANNOT')) {
+				alert("Invalid URL");
+				return;
+			}
 			inputcode.value = text;
 			updateCode();
 			runCode();
@@ -80,13 +84,24 @@ function fixScroll() {
 	inputcode.scrollLeft = Math.min(inputcode.scrollLeft, outputcode.scrollLeft);
 }
 
+function saveCode() {
+	window.localStorage.setItem('microGameSavedCode', inputcode.value);
+} 
+function loadCodeFromStorage() {
+	if (window.localStorage.getItem('microGameSavedCode') !== null) {
+		inputcode.value = window.localStorage.getItem('microGameSavedCode');
+	}
+	updateCode();
+	runCode();
+}
+
 function updateCode() {
 	outputcode.classList.remove('prettyprinted')
 	outputcode.innerHTML = inputcode.value;
 	PR.prettyPrint();
 	fixScroll();
 }
-updateCode();
+loadCodeFromStorage();
 
 const contextMenuItems = [
 	{
