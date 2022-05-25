@@ -2,10 +2,10 @@ let cvs;
 let ctx;
 let time = 0;
 let objects = [];
+let clickable_objects = [];
 let noscaling = false;
 let pixelated = false;
 
-let frame_accuracy = 100;
 let game_running = false;
 let gamebackground = 'white';
 
@@ -63,6 +63,22 @@ function microGame(params) {
 	cvs.style.background = bodybackground;
 	cvs.style.imageRendering = (pixelated ? 'pixelated' : '')
 	cvs.style.boxShadow = '0px 0px 50px black'
+	cvs.onclick = function() {
+		handleEvent('onclick')
+	};
+	cvs.onmousedown = function() {
+		handleEvent('onmousedown')
+	};
+	cvs.onmouseup = function() {
+		handleEvent('onmouseup')
+	};
+	cvs.onmousemove = function() {
+		cvs.style.cursor = 'default'; 
+		handleEvent('onmouseover')
+	};
+	cvs.onmouseout = function() {
+		handleEvent('onmouseout')
+	};
 	cvscontainer.appendChild(cvs)
 	document.body.appendChild(cvscontainer)
 
@@ -82,14 +98,33 @@ function microGame(params) {
 	resizeMicroGame();
 
 	// Fullscreen button
-	const fullscreenbutton = document.createElement('div');
-	fullscreenbutton.innerHTML = `<svg 
-	width="80" height="80" 
+	const controlpanel = document.createElement('div');
+	controlpanel.style.backgroundColor = '#0003'
+	controlpanel.style.width = '200px';
+	controlpanel.style.padding = '10px';
+	controlpanel.style.borderRadius = '20px'
+	controlpanel.style.position = 'fixed';
+	controlpanel.style.right = '10px';
+	controlpanel.style.top = '10px';
+
+	controlpanel.innerHTML = `
+	<svg 
+	width="60" height="60" 
 	viewbox="0 0 10 10" 
-	style="cursor:pointer;position:fixed;top:10px;right:10px;filter:drop-shadow(5px 5px 5px #0006);"
+	style="cursor:pointer;filter:drop-shadow(5px 5px 5px #0006);"
 	onmouseover="this.style.opacity = 0.5;"
 	onmouseout="this.style.opacity = 1;"
-	onclick="cvs.requestFullscreen();">
+	onclick="pauseButton();">
+		<rect fill="white" x="1" y="1" width="2" height="8"></rect>
+		<rect fill="white" x="7" y="1" width="2" height="8"></rect>
+	</svg>
+	<svg 
+	width="60" height="60" 
+	viewbox="0 0 10 10" 
+	style="cursor:pointer;filter:drop-shadow(5px 5px 5px #0006);"
+	onmouseover="this.style.opacity = 0.5;"
+	onmouseout="this.style.opacity = 1;"
+	onclick="fullScreenButton()">
 		<rect fill="white" x="0" y="0" width="3" height="1"></rect>
 		<rect fill="white" x="0" y="0" width="1" height="3"></rect>
 
@@ -102,7 +137,7 @@ function microGame(params) {
 		<rect fill="white" x="7" y="9" width="3" height="1"></rect>
 		<rect fill="white" x="9" y="7" width="1" height="3"></rect>
 	</svg>`
-	document.body.appendChild(fullscreenbutton)
+	document.body.appendChild(controlpanel)
 
 	// Input events
 	document.body.onkeydown = keyDown;
@@ -114,17 +149,32 @@ function microGame(params) {
 	return ctx;
 }
 
+function pauseButton() {
+	gamerunning = !gamerunning;
+	if (gamerunning) {
+		clockMicroGame();
+	}
+}
+
+let fullscreen = false;
+function fullScreenButton() {
+	if (fullscreen) {
+		document.exitFullscreen()
+	} else {
+		document.body.requestFullscreen();
+	}
+	fullscreen = !fullscreen;
+}
+
 function resizeMicroGame() {
 	cvs.style.transform = 'scale(' + Math.min((noscaling === true ? 1 : 9999),Math.min(window.innerWidth/cvs.width, window.innerHeight/cvs.height)) + ')';
 }
 
 function clockMicroGame() {
-	// Clear canvas
-	ctx.fillStyle = gamebackground;
-	ctx.fillRect(0, 0, cvs.width, cvs.height)
-
 	// If game hasn't loaded yet
 	if (unloadedAssets !== 0) {
+		ctx.fillStyle = '#4D97FF';
+		ctx.fillRect(0, 0, cvs.width, cvs.height)
 		ctx.beginPath();
 		ctx.arc(
 			cvs.width / 2, 
@@ -133,7 +183,7 @@ function clockMicroGame() {
 			Math.PI * 1.5,
 			Math.PI * 1.5 + Math.PI * 2 / totalAssets * (totalAssets - unloadedAssets)
 		);
-		ctx.strokeStyle = "#4D97FF";
+		ctx.strokeStyle = "#3D78CC";
 		ctx.lineWidth = Math.min(cvs.width, cvs.height) / 4;
 		ctx.stroke();
 		window.requestAnimationFrame(clockMicroGame);
@@ -144,11 +194,22 @@ function clockMicroGame() {
 		return;
 	}
 
+	// Clear canvas
+	ctx.fillStyle = gamebackground;
+	ctx.fillRect(0, 0, cvs.width, cvs.height)
+
 	// Time and FPS
-	time ++;
-	if (debug_mode) {
-		try {displayDebugText()} catch(e) {}
+	pf = performance.now()
+	frame = 1000 / (pf - last_frame);
+	deltay = 60 / frame;
+	if (isNaN(deltay)) {
+		deltay = 1;
 	}
+	if (debug_mode) {
+		displayDebugText();
+	}
+	last_frame = pf;
+	time += deltay;
 
 	try {
 		adjustCameraPosition()
@@ -172,4 +233,31 @@ function clockMicroGame() {
 
 	// Request next frame
 	window.requestAnimationFrame(clockMicroGame);
+}
+
+function handleEvent(type) {
+	clickable_objects.forEach((obj) => {
+		if (event.layerX > obj.x - obj.width / 2 && 
+			event.layerY > obj.y - obj.height/ 2 && 
+			event.layerX < obj.x + obj.width / 2 && 
+			event.layerY < obj.y + obj.height/ 2) {
+			switch (type) {
+				case "onclick": obj.onclick(); break;
+				case "onmousedown": obj.onmousedown(); break;
+				case "onmouseup": obj.onmouseup(); break;
+				case "onmouseover":
+					cvs.style.cursor = 'pointer'; 
+					if (!obj.hovering) {
+						obj.hovering = true;
+						obj.onmouseover();
+					}
+					break;
+			}
+		} else {
+			if (type === "onmouseover" && obj.hovering) {
+				obj.onmouseout();
+				obj.hovering = false;
+			}
+		}
+	})
 }

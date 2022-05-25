@@ -7,7 +7,7 @@ loadImage('Pipe', 'microGame/assets/pipe.png')
 microGame({
 	width: 1000,
 	height: 700,
-	noscaling: true,
+	noscaling: false,
 	pixelated: false,
 	bodybackground: '#4D97FF',
 	gamebackground: '#FFFFFF',
@@ -23,24 +23,24 @@ function spawnPipe(y, flipped) {
 		y: y,
 		width: 96,
 		height: 800,
-		mirroredy: flipped
+		mirroredy: flipped,
+		continuousx: -5
 	});
 };
 function gameOver() {
 	playSound('Death');
 	player.yvel = 0;
 	alive = false;
-	setTimeout(startGame, 1000)
+	setTimeout(restart, 1000)
 };
-function startGame() {
-	objects = [];
+function start() {
 	alive = true;
 	in_the_air = false
 	counter = new GameElement({
 		type: "Number",
 		width: 50,
 		prefix: 'Score: ',
-		x: 200,
+		x: 10,
 		y: 10
 	});
 	player = new GameElement({
@@ -56,43 +56,48 @@ function startGame() {
 		bounciness: 0,
 		physics: true,
 		collidewalls: true,
-		gravityy: 0.1
+		gravityy: 0.5,
+		continuousr: 0.03
 	});
 };
-startGame();
+restart();
 
 function draw() {
-	if (!alive) return;
+	if (!alive) {
+		player.rotation = Math.PI;
+		return;
+	}
 	if (in_the_air) {
-		if (player.rotation < 0.8) {
-			player.rotation += 0.01;
+		if (player.rotation > 0.8) {
+			player.rotation = 0.8;
 		}
 		if (player.y >= 670) {
 			gameOver();
 		}
 	} else {
 		player.y = 400;
-		time = 1;
+		time = 0;
+		player.rotation = 0;
 	}
     if (keyPress('ArrowUp')) {
-        player.yvel = -5;
+        player.yvel = -10;
 		playSound('Flap');
 		in_the_air = true;
 		player.rotation = -0.8;
     }
-	if (time % 200 == 0) {
+	if (everyNthTick(80)) {
 		const pipeHeight = randomNumberBetween(100, 500);
 		spawnPipe(pipeHeight - 500, true)
 		spawnPipe(pipeHeight + 600 - counter.value * 5, false)
-		if (time > 400) {
-			playSound('Score');
-			counter.increaseNumber();
-		}
 	}
 	everyGameElementWithTheName('Pipe').forEach((pipe) => {
-		pipe.x -= 2.5;
 		if (pipe.collideWith(player)) {
 			gameOver();
+		}
+		if (pipe.x < -50) {
+			pipe.delete()
+			playSound('Score');
+			counter.increaseNumber(0.5);
 		}
 	})
 };

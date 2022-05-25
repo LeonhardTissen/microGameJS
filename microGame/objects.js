@@ -19,6 +19,14 @@ class GameElement {
 				this.prefix = (params.prefix !== undefined ? params.prefix : '');
 				this.font = (params.font !== undefined ? params.font : 'Arial');
 				break;
+			case 'Clickbox':
+				this.onclick = (params.onclick !== undefined ? params.onclick : function() {});
+				this.onmousedown = (params.onmousedown !== undefined ? params.onmousedown : function() {});
+				this.onmouseup = (params.onmouseup !== undefined ? params.onmouseup : function() {});
+				this.onmouseover = (params.onmouseover !== undefined ? params.onmouseover : function() {});
+				this.onmouseout = (params.onmouseout !== undefined ? params.onmouseout : function() {});
+				clickable_objects.push(this);
+				break;
 		}
 
 		this.x = (params.x !== undefined ? params.x : Math.random() * (cvs.width - this.width) + this.width / 2 + camerax);
@@ -31,6 +39,10 @@ class GameElement {
 		this.physics = (params.physics !== undefined ? params.physics : false);
 		this.gravityy = (params.gravityy !== undefined ? params.gravityy : 0);
 		this.gravityx = (params.gravityx !== undefined ? params.gravityx : 0);
+		this.static = (params.static !== undefined ? params.static : false)
+		this.continuousy = (params.continuousy !== undefined ? params.continuousy : 0);
+		this.continuousx = (params.continuousx !== undefined ? params.continuousx : 0);
+		this.continuousr = (params.continuousr !== undefined ? params.continuousr : 0);
 		this.collidewalls = (params.collidewalls !== undefined ? params.collidewalls : false);
 		this.bounciness = (params.bounciness !== undefined ? params.bounciness : 0.75);
 		this.friction = (params.friction !== undefined ? params.friction : 0.75);
@@ -81,13 +93,28 @@ class GameElement {
 				ctx.font = this.width + "px " + this.font;
 				ctx.fillText(this.prefix + this.value, x, y + this.width)
 				break;
+			case "Clickbox":
+				if (this.color !== undefined) {
+					ctx.fillStyle = this.color;
+					ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
+				} else if (debug_mode) {
+					ctx.globalAlpha = 0.5;
+					ctx.strokeStyle = 'black';
+					ctx.setLineDash([10, 8]);
+					ctx.lineWidth = 1
+					ctx.strokeRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
+				}
+				break;
 		}
 		ctx.globalAlpha = 1;
 		if (this.rotation !== 0 || this.mirroredx || this.mirroredy) {
 			ctx.restore();
 		}
 		if (this.physics) {
-			this.emulateVelocities()
+			this.emulateVelocities();
+		}
+		if (!this.static) {
+			this.emulateMovement();
 		}
 		if (this.collidewalls) {
 			this.collideWalls();
@@ -126,12 +153,24 @@ class GameElement {
 		}
 	}
 
+	// constant movement
+	emulateMovement() {
+		if (this.continuousx !== 0) {
+			this.x += this.continuousx * deltay;
+		}
+		if (this.continuousy !== 0) {
+			this.y += this.continuousy * deltay;
+		}
+		if (this.continuousr !== 0) {
+			this.rotation += this.continuousr * deltay;
+		}
+	}
 
 	// physics functions
 	emulateVelocities() {
-		this.yvel += this.gravityy
-		this.x += this.xvel;
-		this.y += this.yvel;
+		this.yvel += this.gravityy * deltay;
+		this.x += this.xvel * deltay;
+		this.y += this.yvel * deltay;
 	}
 
 	// collision functions
@@ -178,7 +217,7 @@ class GameElement {
 	rotateClockwise(degrees) {
 		this.rotation += degrees;
 	}
-	rotateCounterClosewise(degrees) {
+	rotateCounterClockwise(degrees) {
 		this.rotation -= degrees;
 	}
 	rotateSet(degrees) {

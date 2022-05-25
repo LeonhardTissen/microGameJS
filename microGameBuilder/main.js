@@ -37,7 +37,10 @@ function keyDown() {
 function runCode() {
 	console.clear()
 	saveCode();
-	gamewindow.innerHTML = `<iframe width="100" height="100" src="emulation.html"></iframe><div class="microGameLogo"><div class="verticalSegment clampRight"><div class="horizontalSegment clampLeftHarder clampOffsetTop"><div class="verticalSegment clampRightHarder"><div class="horizontalSegment clampLeftHarder clampOffsetTop"></div></div></div></div><div class="horizontalSegment clampLeft"><div class="verticalSegment clampRightHarder clampOffsetRight"><div class="horizontalSegment clampLeftHarder"><div class="verticalSegment clampRightHarder clampOffsetRight"></div></div></div></div></div>`
+	gamewindow.innerHTML = `
+	<iframe width="100" height="100" src="emulation.html">
+	</iframe>
+	<div class="microGameLogo"><div class="verticalSegment clampRight"><div class="horizontalSegment clampLeftHarder clampOffsetTop"><div class="verticalSegment clampRightHarder"><div class="horizontalSegment clampLeftHarder clampOffsetTop"></div></div></div></div><div class="horizontalSegment clampLeft"><div class="verticalSegment clampRightHarder clampOffsetRight"><div class="horizontalSegment clampLeftHarder"><div class="verticalSegment clampRightHarder clampOffsetRight"></div></div></div></div></div>`
 	iframe = document.querySelector('#gamewindow iframe')
 	loading = document.querySelector('#gamewindow .microGameLogo');
 	iframe.onload = function() {
@@ -62,7 +65,7 @@ function loadCode(url) {
 	if (!url) return;
 	fetch(url).then((response) => {
 		response.text().then((text) => {
-			if (text.startsWith('CANNOT')) {
+			if (text.startsWith('CANNOT') || text.startsWith('<')) {
 				alert("Invalid URL");
 				return;
 			}
@@ -119,6 +122,10 @@ microGame({
 	gamebackground: '#FFFFFF',
 	debug: true
 })
+
+function start() {
+	
+}
 
 function draw() {
 
