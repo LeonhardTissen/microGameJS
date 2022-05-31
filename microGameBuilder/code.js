@@ -57,22 +57,22 @@ const codecolors = {
 		'strings': '#007e94',
 		'comment': '#ff7b00',
 		'tcursor': '#FFFFFF',
-		'tselect': '#444444',
+		'tselect': '#444444'
 	}
 }
 
 function updateCodeColors() {
-	const keys = Object.keys(codecolors['default'])
+	const keys = Object.keys(codecolors['Default'])
 	keys.forEach((key) => {
 		value = localStorage.getItem('microGameCodeColor' + key);
-		value = (value === null ? codecolors['default'][key] : value);
+		value = (value === null ? codecolors['Default'][key] : value);
 		document.documentElement.style.setProperty('--' + key, value);
 		document.getElementById('codecolor' + key).value = value;
 	})
 }
 
 function resetCodeColors() {
-	const keys = Object.keys(codecolors['default'])
+	const keys = Object.keys(codecolors['Default'])
 	keys.forEach((key) => {
 		localStorage.removeItem('microGameCodeColor' + key);
 	})
@@ -84,7 +84,7 @@ function setCodeColor(key, value) {
 	localStorage.setItem('microGameCodeColor' + key, value);
 }
 
-function importCodeColors(preset = 'default') {
+function importCodeColors(preset = 'Default') {
 	resetCodeColors();
 	const keys = Object.keys(codecolors[preset]);
 	keys.forEach((key) => {
@@ -94,7 +94,7 @@ function importCodeColors(preset = 'default') {
 }
 
 function exportCodeColors(preset = 'sample') {
-	const keys = Object.keys(codecolors['default']);
+	const keys = Object.keys(codecolors['Default']);
 	var output = `'${preset}': {\n`
 	keys.forEach((key) => {
 		output += `'${key}': '${localStorage.getItem('microGameCodeColor' + key)}',\n`;

@@ -243,7 +243,7 @@ function openMenu(type) {
 
 	switch (type) {
 		case "Colors":
-			const keys = Object.keys(codecolors['default']);
+			const keys = Object.keys(codecolors['Default']);
 			keys.forEach((key) => {
 				const color = getComputedStyle(document.body).getPropertyValue('--' + key);
 				const colorpicker = document.createElement('input')
