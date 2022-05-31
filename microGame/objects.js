@@ -33,13 +33,14 @@ class GameElement {
 		this.y = (params.y !== undefined ? params.y : Math.random() * (cvs.height - this.height) + this.height / 2 + cameray);
 		this.parallax = (params.parallax !== undefined ? params.parallax : 1);
 		this.rotation = (params.rotation !== undefined ? params.rotation : 0);
-		this.mirroredx = (params.mirroredx !== undefined ? params.mirroredx : false);
-		this.mirroredy = (params.mirroredy !== undefined ? params.mirroredy : false);
+		this.scalex = (params.scalex !== undefined ? params.scalex : 1);
+		this.scaley = (params.scaley !== undefined ? params.scaley : 1);
 		this.opacity = (params.opacity !== undefined ? params.opacity : 1);
 		this.physics = (params.physics !== undefined ? params.physics : false);
 		this.gravityy = (params.gravityy !== undefined ? params.gravityy : 0);
 		this.gravityx = (params.gravityx !== undefined ? params.gravityx : 0);
 		this.static = (params.static !== undefined ? params.static : false)
+		this.visible = (params.visible !== undefined ? params.visible : true)
 		this.continuousy = (params.continuousy !== undefined ? params.continuousy : 0);
 		this.continuousx = (params.continuousx !== undefined ? params.continuousx : 0);
 		this.continuousr = (params.continuousr !== undefined ? params.continuousr : 0);
@@ -54,11 +55,14 @@ class GameElement {
 
 	// general functions
 	draw() {
-		if (this.rotation !== 0 || this.mirroredx || this.mirroredy) {
+		if (!this.visible || this.opacity <= 0) {
+			return;
+		}
+		if (this.rotation !== 0 || this.scalex !== 1 || this.scaley !== 1) {
 			ctx.save();
 			ctx.translate(this.x, this.y);
-			ctx.scale(this.mirroredx ? -1 : 1, this.mirroredy ? -1 : 1)
-			ctx.rotate(this.rotation);
+			ctx.scale(this.scalex, this.scaley)
+			ctx.rotate(this.rotation * Math.PI / 180);
 			ctx.translate(-this.x, -this.y);
 		}
 		ctx.globalAlpha = this.opacity;
@@ -107,7 +111,7 @@ class GameElement {
 				break;
 		}
 		ctx.globalAlpha = 1;
-		if (this.rotation !== 0 || this.mirroredx || this.mirroredy) {
+		if (this.rotation !== 0 || this.scalex !== 1 || this.scaley !== 1) {
 			ctx.restore();
 		}
 		if (this.physics) {
@@ -220,7 +224,7 @@ class GameElement {
 	rotateCounterClockwise(degrees) {
 		this.rotation -= degrees;
 	}
-	rotateSet(degrees) {
+	setRotation(degrees) {
 		this.rotation = degrees;
 	}
 }

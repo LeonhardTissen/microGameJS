@@ -8,6 +8,12 @@ inputcode.onscroll = scrollCode;
 document.body.onkeydown = keyDown;
 inputcode.oncontextmenu = contextMenu;
 inputcode.onclick = closeContextMenus;
+document.body.onmousemove = function() {
+	const x = 2 - event.clientX / window.innerWidth;
+	const y = 2 - event.clientY / window.innerHeight;
+	document.querySelector('#robot .face').style.transform = `translateX(${15-x*15}px)`
+	document.querySelector('#robot .screen').style.transform = `translateY(${15-y*15}px)`
+}
 
 HTMLTextAreaElement.prototype.getCaretPosition = function () { //return the caret position of the textarea
     return this.selectionStart;
@@ -223,3 +229,63 @@ function contextMenu() {
 	})
 	document.body.appendChild(contextMenu);
 }
+
+function openMenu(type) {
+	const floatingwindow = document.getElementById('floatingwindow');
+	floatingwindow.style.display = 'block';
+	setTimeout(function() {
+		floatingwindow.style.opacity = 1;
+	}, 1)
+	const floatingwindowcontents = document.getElementById('floatingwindowcontents');
+	floatingwindowcontents.innerHTML = '';
+	const floatingwindowtitle = document.getElementById('floatingwindowtitle');
+	floatingwindowtitle.innerText = type;
+
+	switch (type) {
+		case "Colors":
+			const keys = Object.keys(codecolors['default']);
+			keys.forEach((key) => {
+				const color = getComputedStyle(document.body).getPropertyValue('--' + key);
+				const colorpicker = document.createElement('input')
+				colorpicker.type = 'color';
+				colorpicker.value = color;
+				floatingwindowcontents.innerHTML += `<div class="colorslot">
+					<input type="color" id="codecolor${key}" value="${color}" oninput="
+					setCodeColor('${key}', this.value)
+					">
+					<span class="inputspan">${key}</span>
+				</div>`
+			});
+			floatingwindowcontents.innerHTML += `<h1 class="presetstitle">Presets</h1>`
+			const presets = Object.keys(codecolors);
+			presets.forEach((preset) => {
+				const presetbutton = document.createElement('button');
+				presetbutton.innerText = preset;
+				presetbutton.classList.add('presetbutton');
+				presetbutton.onclick = function() {
+					importCodeColors(preset);
+				}
+				const colors = Object.keys(codecolors[preset]);
+				var i = 0;
+				colors.forEach((color) => {
+					colorcircle = document.createElement('div');
+					colorcircle.style.backgroundColor = codecolors[preset][color];
+					colorcircle.style.right = i + '%';
+					i += 3;
+					colorcircle.classList.add('colorcircle');
+					presetbutton.appendChild(colorcircle);
+				})
+				floatingwindowcontents.appendChild(presetbutton);
+			});
+
+			break;
+	}
+}
+
+function closeMenu() {
+	const floatingwindow = document.getElementById('floatingwindow');
+	floatingwindow.style.opacity = 0;
+	setTimeout(function() {
+		floatingwindow.style.display = 'none';
+	}, 200);
+};

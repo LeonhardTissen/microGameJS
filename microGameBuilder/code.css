@@ -1,0 +1,26 @@
+:root {
+	--boolean: #00CCFF;
+	--classes: #FF8800;
+	--numbers: #00FF00;
+	--default: #FFFFFF;
+	--special: #9999FF;
+	--strings: #FF77FF;
+	--comment: #999999;
+	--backgnd: #000000;
+	--tcursor: #FFFFFF;
+	--tselect: #444444;
+}
+.com {color: var(--comment) !important;}
+.kwd {color: var(--boolean) !important;}
+.typ {color: var(--classes) !important;}
+.lit {color: var(--numbers) !important;}
+.pln {color: var(--default) !important;}
+.pun {color: var(--special) !important;}
+.str {color: var(--strings) !important;}
+::selection {
+	background: var(--tselect);
+}
+#inputcode {
+	caret-color: var(--tcursor);
+	background-color: var(--backgnd);
+}

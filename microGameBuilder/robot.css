@@ -1,0 +1,79 @@
+#robot {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	width: 300px;
+	height: 320px;
+}
+#robot * {
+	transition: transform 0.05s ease-out;
+}
+#robot #lock {
+	width: 100vw;
+	height: 100vh;
+	background-color: #0003;
+	top: 0;
+	left: 0;
+	position: fixed;
+}
+#robot svg {
+	position: fixed;
+}
+
+#robot .head {
+	animation: head 1s ease-in-out infinite alternate;
+}
+@keyframes head {
+	from {
+		transform: translateY(0px);
+	}
+	to {
+		transform: translateY(5px);
+	}
+}
+#robot .body {
+	animation: body 1s ease-in-out infinite alternate 0.5s;
+}
+@keyframes body {
+	from {
+		transform: translateY(0px);
+	}
+	to {
+		transform: translateY(5px);
+	}
+}
+#robot .shadow {
+	animation: shadow 1s ease-in-out infinite alternate 0.5s;
+	transform-origin: 150px 305px;
+}
+@keyframes shadow {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(1.1);
+	}
+}
+#robot .eye {
+	animation: roboteye 4s infinite;
+}
+@keyframes roboteye {
+	0% {
+		opacity: 1;
+	}
+	94% {
+		opacity: 1;
+	}
+	97% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+#robot svg {
+	cursor: grab;
+}
+#robot svg:hover .eyehappy {
+	transform: translateY(-6px);
+}

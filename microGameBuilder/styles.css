@@ -1,3 +1,7 @@
+@font-face {
+	src: url(SecularOne-Regular.ttf);
+	font-family: Secular;
+}
 body {
 	background-color: #111;
 }
@@ -5,31 +9,46 @@ textarea {
 	border: none;
 	overflow-x: scroll;
 }
-.code {
-	margin: 0;
-	filter:invert(1);
-	font-size:24px;
+#toolbar {
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 100vh;
 	width: 50vw;
+	height: 30px;
+}
+#toolbar button {
+	background-color: transparent;
+	color: white;
+	border: none;
+	font-size: 22px;
+	transition: box-shadow 0.2s ease-out;
+	box-shadow: inset 0px 0px 0px #FFF2;
+	cursor: pointer;
+	font-family: Secular;
+}
+#toolbar button:hover {
+	box-shadow: inset 0px -30px 0px #FFF2;
+}
+.code {
+	margin: 0;
+	font-size:24px;
+	position: fixed;
+	top: 30px;
+	left: 0;
+	height: calc(100vh - 30px);
+	width: calc(50vw - 4px);
 	overflow: auto;
 	tab-size: 53px;
 	resize: none;
 }
 #inputcode {
 	outline: none;
-	color: #EEEEEE;
-	caret-color: black;
+	color: transparent;
 }
 #outputcode {
 	pointer-events: none;
 	border: none;
 	overflow: hidden;
-}
-::selection {
-	background: #BBBBBB;
 }
 #gamewindow {
 	bottom: 0;
@@ -48,7 +67,7 @@ textarea {
 	border: none;
 }
 @media (max-width: 100vh) {
-	pre {
+	.code {
 		height: 50vh;
 		width: 100vw;
 	}
@@ -56,18 +75,6 @@ textarea {
 		height: 50vh;
 		width: 100vw;
 	}
-}
-.com {
-	color: #999 !important;
-}
-.kwd {
-	color: #F30 !important;
-}
-.typ {
-	color: #08F !important;
-}
-.lit {
-	color: #F0F !important;
 }
 .contextMenu {
 	animation: contextMenuAppear 0.2s linear;
@@ -96,4 +103,86 @@ textarea {
 	to {
 		opacity: 1;
 	}
+}
+#floatingwindow {
+	position: fixed;
+	left: calc(50vw + 25px);
+	top: 25px;
+	width: calc(50vw - 50px);
+	height: calc(100vh - 50px);
+	background-color: #000C;
+	z-index: 2;
+	transition: opacity 0.2s;
+	overflow-y: auto;
+}
+#floatingwindow #closingbutton {
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+#floatingwindow #closingbutton:hover {
+	background-color: red;
+}
+#floatingwindow input[type="color"] {
+	border-radius: 5px;
+	width: 50px;
+	height: 50px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background-color: transparent;
+}
+#floatingwindow .inputspan {
+	color: white;
+	vertical-align: top;
+	font-size: 30px;
+	margin-top: 4px;
+	display: inline-block;
+	text-transform: capitalize;
+	font-family: "Secular";
+}
+#floatingwindow .colorslot {
+	width: 47%;
+	display: inline-block;
+	white-space: nowrap;
+}
+#floatingwindowcontents .presetstitle {
+	font-size: 40px;
+	font-family: "Secular";
+	color: white;
+	margin: 10px;
+}
+#floatingwindowtitle {
+	font-size: 40px;
+	font-family: "Secular";
+	color: white;
+	margin: 10px;
+	border-bottom: 1px solid white;
+}
+#floatingwindow .presetbutton {
+	width: calc(100% - 10px);
+	display: block;
+	position: relative;
+	background-color: transparent;
+	font-size: 24px;
+	border: 1px solid white;
+	color: white;
+	font-family: "Secular";
+	margin: 5px;
+	text-align: left;
+	cursor: pointer;
+	transition: all 0.2s ease-out;
+	box-shadow: 0px 0px 0px white;
+}
+#floatingwindow .presetbutton:hover {
+	opacity: 0.7;
+	margin-bottom: 10px;
+	box-shadow: 0px 5px 0px white;
+}
+#floatingwindow .colorcircle {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	width: 3%;
 }

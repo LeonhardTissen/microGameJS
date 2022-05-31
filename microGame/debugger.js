@@ -7,9 +7,11 @@ let last_frame;
 let deltay;
 
 function displayDebugText() {
-	avg_frame_rate.push(frame)
-	if (avg_frame_rate.length > frame_accuracy) {
-		avg_frame_rate.shift()
+	if (frame !== Infinity && !isNaN(frame)) {
+		avg_frame_rate.push(frame)
+		if (avg_frame_rate.length > frame_accuracy) {
+			avg_frame_rate.shift()
+		}
 	}
 	let avg = 0;
 	avg_frame_rate.forEach((fps) => {

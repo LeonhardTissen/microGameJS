@@ -152,6 +152,8 @@ function microGame(params) {
 function pauseButton() {
 	gamerunning = !gamerunning;
 	if (gamerunning) {
+		last_frame = performance.now()
+		avg_frame_rate = []
 		clockMicroGame();
 	}
 }
@@ -171,6 +173,8 @@ function resizeMicroGame() {
 }
 
 function clockMicroGame() {
+	if (!gamerunning) return;
+
 	// If game hasn't loaded yet
 	if (unloadedAssets !== 0) {
 		ctx.fillStyle = '#4D97FF';
@@ -187,10 +191,6 @@ function clockMicroGame() {
 		ctx.lineWidth = Math.min(cvs.width, cvs.height) / 4;
 		ctx.stroke();
 		window.requestAnimationFrame(clockMicroGame);
-		return;
-	}
-
-	if (!gamerunning) {
 		return;
 	}
 
