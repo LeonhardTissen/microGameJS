@@ -1,5 +1,5 @@
 const codecolors = {
-	'default': {
+	'Default': {
 		'default': '#FFFFFF',
 		'backgnd': '#000000',
 		'boolean': '#00CCFF',
@@ -11,7 +11,7 @@ const codecolors = {
 		'tcursor': '#FFFFFF',
 		'tselect': '#444444'
 	},
-	'ice': {
+	'Ice': {
 		'default': '#FFFFFF',
 		'backgnd': '#0c0c18',
 		'boolean': '#0dfff3',
@@ -23,7 +23,7 @@ const codecolors = {
 		'tcursor': '#00fbfb',
 		'tselect': '#12506d'
 	},
-	'strawberry': {
+	'Strawberry': {
 		'default': '#FFFFFF',
 		'backgnd': '#000000',
 		'boolean': '#ff1515',
@@ -35,7 +35,7 @@ const codecolors = {
 		'tcursor': '#FFFFFF',
 		'tselect': '#444444'
 	},
-	'tree': {
+	'Tree': {
 		'default': '#FFFFFF',
 		'backgnd': '#000000',
 		'boolean': '#4aff15',
@@ -47,6 +47,18 @@ const codecolors = {
 		'tcursor': '#a4ff97',
 		'tselect': '#4b3e25'
 	},
+	'Blues': {
+		'default': '#6f85b8',
+		'backgnd': '#0c1527',
+		'boolean': '#75bcff',
+		'classes': '#00ff08',
+		'numbers': '#00ffee',
+		'special': '#47ff6c',
+		'strings': '#007e94',
+		'comment': '#ff7b00',
+		'tcursor': '#FFFFFF',
+		'tselect': '#444444',
+	}
 }
 
 function updateCodeColors() {
