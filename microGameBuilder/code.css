@@ -10,13 +10,13 @@
 	--tcursor: #FFFFFF;
 	--tselect: #444444;
 }
-.com {color: var(--comment) !important;}
-.kwd {color: var(--boolean) !important;}
-.typ {color: var(--classes) !important;}
-.lit {color: var(--numbers) !important;}
-.pln {color: var(--default) !important;}
-.pun {color: var(--special) !important;}
-.str {color: var(--strings) !important;}
+.com {color: var(--comment);}
+.kwd {color: var(--boolean);}
+.typ {color: var(--classes);}
+.lit {color: var(--numbers);}
+.pln {color: var(--default);}
+.pun {color: var(--special);}
+.str {color: var(--strings);}
 ::selection {
 	background: var(--tselect);
 }
