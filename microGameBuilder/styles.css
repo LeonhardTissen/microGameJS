@@ -194,6 +194,9 @@ textarea {
 	left: -25px;
 	user-select: none;
 }
+.hidden {
+	pointer-events: none;
+}
 #leftsidebar .toolboxcontainer {
 	height: 50px;
 	margin-bottom: 5px;

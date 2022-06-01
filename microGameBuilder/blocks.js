@@ -27,6 +27,8 @@ function draw() {
 
 }
 
+
+
 `, ``, ``]
 	}
 },
@@ -63,8 +65,7 @@ function draw() {
 		physics: true,
 		collidewalls: true,
 		gravityy: 0.5
-	})
-`, ``]
+	})`, ``]
 	}
 },
 {

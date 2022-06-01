@@ -58,7 +58,43 @@ const codecolors = {
 		'comment': '#ff7b00',
 		'tcursor': '#FFFFFF',
 		'tselect': '#444444'
-	}
+	},
+	'Gameboy': {
+		'default': '#c4ec37',
+		'backgnd': '#0f380f',
+		'boolean': '#8bac0f',
+		'classes': '#4e7629',
+		'numbers': '#9bbc0f',
+		'special': '#8bac0f',
+		'strings': '#8bac0f',
+		'comment': '#306230',
+		'tcursor': '#9bbc0f',
+		'tselect': '#0a230a',
+	},
+	'Crystal': {
+		'default': '#ffffff',
+		'backgnd': '#05021a',
+		'boolean': '#37f5ff',
+		'classes': '#ff2466',
+		'numbers': '#fff204',
+		'special': '#ff7a2b',
+		'strings': '#db2fff',
+		'comment': '#0e7c8f',
+		'tcursor': '#9bbc0f',
+		'tselect': '#0a230a',
+	},
+	'Monochrome': {
+		'default': '#ffffff',
+		'backgnd': '#000000',
+		'boolean': '#868686',
+		'classes': '#ffffff',
+		'numbers': '#c5c5c5',
+		'special': '#8a8a8a',
+		'strings': '#dbdbdb',
+		'comment': '#494949',
+		'tcursor': '#ffffff',
+		'tselect': '#161616',
+	},
 }
 
 function updateCodeColors() {
