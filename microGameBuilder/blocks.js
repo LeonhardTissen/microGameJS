@@ -5,16 +5,17 @@ const blocks = [
 	color: "#4D97FF",
 	blocks: {
 "Create MicroGame": [
-`// Creation of the game window
+`
+// Creation of the game window
 microGame({
 	width: 1000,
 	height: 700,
 	noscaling: true,
 	pixelated: false,
-	bodybackground: '#4D97FF',
-	gamebackground: '#FFFFFF',
+	bodybackground: '#4d97ff',
+	gamebackground: '#ffffff',
 	debug: true
-})
+});
 
 // This runs at the start of the game
 function start() {
@@ -52,7 +53,7 @@ function draw() {
 		"Create Image with Gravity": [
 `loadImage('Redblockeyes', 'microGame/assets/redblockeyes.png')
 `, `
-	const my_image_gravity = new GameElement({
+	my_image_gravity = new GameElement({
 		name: 'MyImageGravity',
 		type: 'Image',
 		src: 'Redblockeyes',
@@ -72,7 +73,10 @@ function draw() {
 	name: "Sounds",
 	color: "#C14FFF",
 	blocks: {
-		"Test": [``,``,``]
+		"Load Sound": [`loadSound('Whoosh', 'microGame/assets/flap.mp3');
+`,`
+	playSound('Whoosh');
+		`,``]
 	}
 },
 {
@@ -108,7 +112,6 @@ function draw() {
 for (var b = 0; b < blocks.length; b ++) {
 	const name = blocks[b].name;
 	const color = blocks[b].color;
-	console.log("a")
 	leftsidebar.innerHTML += `
 	<div class="toolboxcontainer" onclick="openBlocks(${b});">
 			<div class="toolboxcircle" style="background-color: ${color}">
@@ -131,4 +134,5 @@ function openBlocks(id) {
 			<h1 class="singleboxtitle">${key}</h1>
 		</div>`
 	}
+	closeMenu();
 }

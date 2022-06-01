@@ -10,7 +10,7 @@ let game_running = false;
 let gamebackground = 'white';
 
 function microGame(params) {
-	console.clear()
+	//console.clear()
 	// Variables
 	let width = 512;
 	let height = 512;

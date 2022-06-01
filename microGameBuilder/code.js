@@ -81,7 +81,7 @@ const codecolors = {
 		'strings': '#db2fff',
 		'comment': '#0e7c8f',
 		'tcursor': '#9bbc0f',
-		'tselect': '#0a230a',
+		'tselect': '#115b06',
 	},
 	'Monochrome': {
 		'default': '#ffffff',

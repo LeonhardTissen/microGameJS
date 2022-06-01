@@ -50,7 +50,7 @@ function keyDown() {
 }
 
 function runCode() {
-	console.clear()
+	//console.clear()
 	saveCode();
 	document.body.classList.remove('codeblocksopened');
 	gamewindow.innerHTML = `
@@ -114,10 +114,57 @@ function loadCodeFromStorage() {
 	runCode();
 }
 
+function checkIfLight(color) {
+    const hex = color.replace('#', '');
+    const c_r = parseInt(hex.substr(0, 2), 16);
+    const c_g = parseInt(hex.substr(2, 2), 16);
+    const c_b = parseInt(hex.substr(4, 2), 16);
+    const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+    return brightness > 155;
+}
+
+let colortarget;
+
+function getAllDynamicCode() {
+	return document.querySelectorAll('.kwd, .str')
+}
+
 function updateCode() {
 	outputcode.classList.remove('prettyprinted')
 	outputcode.innerHTML = inputcode.value;
 	PR.prettyPrint();
+	let index = 0;
+	getAllDynamicCode().forEach((elem) => {
+		if (elem.innerText === 'true' || elem.innerText === 'false') {
+			elem.classList.add('toggleable')
+			elem.onclick = function() {
+				this.innerText = (this.innerText === 'true' ? 'false' : 'true')
+				document.getElementById('inputcode').value = document.getElementById('outputcode').innerText;
+			}
+		} else if (elem.innerText[1] === '#') {
+			const regex = new RegExp('^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$');
+			const colorstring = elem.innerText.replaceAll('"','').replaceAll("'","");
+			if (regex.test(colorstring)) {
+				elem.classList.add('colorpicker')
+				elem.style.color = (checkIfLight(colorstring) ? 'black' : 'white')
+				elem.style.backgroundColor = colorstring + "DD";
+				elem.setAttribute('index', index)
+				elem.onclick = function() {
+					colortarget = index;
+					const colorinput = document.createElement('input')
+					colorinput.type = 'color';
+					colorinput.click();
+					colorinput.setAttribute('target', this.getAttribute('index'));
+					colorinput.oninput = function() {
+						getAllDynamicCode()[this.getAttribute('target')].innerText = `'${this.value}'`;
+						document.getElementById('inputcode').value = document.getElementById('outputcode').innerText;
+						updateCode();
+					}
+				}
+			}
+		}
+		index ++;
+	});
 	fixScroll();
 }
 loadCodeFromStorage();

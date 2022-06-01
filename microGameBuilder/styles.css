@@ -300,10 +300,10 @@ textarea {
 	transition: all 0.2s ease-out;
 }
 #codeblockscontents .singlebox:hover {
-	transform: translateY(-5px);
 	height: 110px;
 	box-shadow: inset 0px -6px 0px #0004;
 	filter: brightness(1.1);
+	margin-top: 0px;
 }
 #codeblockscontents .singlebox .singleboxtitle {
 	font-family: "Secular";
@@ -356,4 +356,32 @@ textarea {
 #inputcode {
 	caret-color: var(--tcursor);
 	background-color: var(--backgnd);
+}
+.toggleable {
+	pointer-events: all;
+	cursor: pointer;
+	transition: all 0.2s ease-out;
+}
+.toggleable:hover {
+	background-color: var(--boolean);
+	border-radius: 5px;
+	color: white;
+}
+.colorpicker {
+	border-radius: 5px;
+	cursor: pointer;
+	pointer-events: all;
+}
+.colorpicker:hover {
+	opacity: 0.8;
+}
+.runbutton {
+	position: absolute;
+	right: 0;
+	top: 0;
+	cursor: pointer;
+	transition: background-color 0.2s ease-out;
+}
+.runbutton:hover {
+	background-color: #030;
 }
