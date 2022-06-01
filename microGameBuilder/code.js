@@ -67,7 +67,9 @@ function updateCodeColors() {
 		value = localStorage.getItem('microGameCodeColor' + key);
 		value = (value === null ? codecolors['Default'][key] : value);
 		document.documentElement.style.setProperty('--' + key, value);
-		document.getElementById('codecolor' + key).value = value;
+		try {
+			document.getElementById('codecolor' + key).value = value;
+		} catch (err) {}
 	})
 }
 

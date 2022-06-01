@@ -11,8 +11,17 @@ inputcode.onclick = closeContextMenus;
 document.body.onmousemove = function() {
 	const x = 2 - event.clientX / window.innerWidth;
 	const y = 2 - event.clientY / window.innerHeight;
-	document.querySelector('#robot .face').style.transform = `translateX(${15-x*15}px)`
-	document.querySelector('#robot .screen').style.transform = `translateY(${15-y*15}px)`
+	document.querySelector('#robot .face').style.transform = `translateX(${15-x*15}px)`;
+	document.querySelector('#robot .screen').style.transform = `translateY(${15-y*15}px)`;
+	if (event.clientY > window.innerHeight / 2 - 190 && event.clientY < window.innerHeight / 2 + 190) {
+		if (event.clientX <= 0) {
+			document.getElementById('leftsidebar').classList.remove('hidden')
+		} else if (event.clientX > 320) {
+			document.getElementById('leftsidebar').classList.add('hidden')
+		}
+	} else {
+		document.getElementById('leftsidebar').classList.add('hidden')
+	}
 }
 
 HTMLTextAreaElement.prototype.getCaretPosition = function () { //return the caret position of the textarea
@@ -43,6 +52,7 @@ function keyDown() {
 function runCode() {
 	console.clear()
 	saveCode();
+	document.body.classList.remove('codeblocksopened');
 	gamewindow.innerHTML = `
 	<iframe width="100" height="100" src="emulation.html">
 	</iframe>
@@ -199,10 +209,21 @@ function insideDrawCode(code) {
 	const v = inputcode.value;
 	const pos = v.indexOf('draw() {');
 	if (pos === -1) {
-		alert("No draw function found, please create a game window.")
+		alert("No draw function found, please create a microgame window.")
 		return;
 	}
 	inputcode.value = v.substr(0, pos + 8) + code + v.substr(pos + 8, v.length)
+	updateCode();
+}
+
+function insideStartCode(code) {
+	const v = inputcode.value;
+	const pos = v.indexOf('start() {');
+	if (pos === -1) {
+		alert("No start function found, please create a microgame window.")
+		return;
+	}
+	inputcode.value = v.substr(0, pos + 9) + code + v.substr(pos + 9, v.length)
 	updateCode();
 }
 
@@ -277,7 +298,7 @@ function openMenu(type) {
 				})
 				floatingwindowcontents.appendChild(presetbutton);
 			});
-
+			updateCodeColors()
 			break;
 	}
 }

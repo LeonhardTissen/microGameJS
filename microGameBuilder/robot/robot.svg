@@ -1,0 +1,28 @@
+<svg width="300" height="320" viewBox="0 0 300 320">
+	<ellipse class="shadow" cx="150" cy="305" rx="60" ry="15" fill="black" opacity="0.5"></ellipse>
+	<g class="body">
+		<ellipse class="arm" cx="90" cy="235" rx="20" ry="35" fill="#4D97FF" stroke-width="8" stroke="black" transform="rotate(10)" transform-origin="90 235"></ellipse>
+		<ellipse class="arm" cx="210" cy="235" rx="20" ry="35" fill="#4D97FF" stroke-width="8" stroke="black" transform="rotate(-10)" transform-origin="210 235"></ellipse>
+		<ellipse class="core" cx="150" cy="220" rx="50" ry="75" fill="#3D78CC" stroke-width="8" stroke="black"></ellipse>
+	</g>
+	<g class="head">
+		<rect class="antennaline" x="145" y="50" width="10" height="10" fill="black" stroke-width="8"/>
+		<circle class="antenna" cx="150" cy="30" r="20" fill="#3D78CC" stroke-width="8" stroke="black"></circle>
+		<circle class="ear" cx="250" cy="130" r="20" fill="#3D78CC" stroke-width="8" stroke="black"></circle>
+		<circle class="ear" cx="50" cy="130" r="20" fill="#3D78CC" stroke-width="8" stroke="black"></circle>
+		<rect class="skull" x="50" y="64" width="200" height="150" rx="50" fill="#4D97FF" stroke="black" stroke-width="8"/>
+		<g class="face">
+			<rect class="forehead" x="100" y="66" rx="2" width="100" height="55" fill="#3D78CC" stroke="black" stroke-width="8"/>
+			<g class="screen">
+				<rect class="frame" x="90" y="117" width="120" height="60" rx="10" fill="#4D97FF" stroke="black" stroke-width="8"/>
+				<rect class="display" x="100" y="127.5" width="100" height="40" rx="5" fill="black"/>
+				<g class="eyes">
+					<circle class="eye" cx="120" cy="147.5" r="10" fill="#3D78CC"></circle>
+					<circle class="eye" cx="180" cy="147.5" r="10" fill="#3D78CC"></circle>
+					<rect class="eyehappy" x="100" y="157.5" width="100" height="10" fill="black"/>
+					<rect class="eyeangry" x="100" y="127.5" width="100" height="10" fill="black"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

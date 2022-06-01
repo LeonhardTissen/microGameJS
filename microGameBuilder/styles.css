@@ -4,13 +4,22 @@
 }
 body {
 	background-color: #111;
+	overflow: hidden;
 }
 textarea {
 	border: none;
 	overflow-x: scroll;
 }
-#toolbar {
+#leftside {
+	transition: left 0.2s ease-out;
 	position: fixed;
+	top: 0;
+	left: 0;
+	width: 50vw;
+	height: 100vh;
+}
+#toolbar {
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 50vw;
@@ -32,7 +41,7 @@ textarea {
 .code {
 	margin: 0;
 	font-size:24px;
-	position: fixed;
+	position: absolute;
 	top: 30px;
 	left: 0;
 	height: calc(100vh - 30px);
@@ -40,6 +49,7 @@ textarea {
 	overflow: auto;
 	tab-size: 53px;
 	resize: none;
+	padding-left: 5px;
 }
 #inputcode {
 	outline: none;
@@ -65,16 +75,6 @@ textarea {
 	overflow: hidden;
 	background-color: #4D97FF;
 	border: none;
-}
-@media (max-width: 100vh) {
-	.code {
-		height: 50vh;
-		width: 100vw;
-	}
-	#gamewindow {
-		height: 50vh;
-		width: 100vw;
-	}
 }
 .contextMenu {
 	animation: contextMenuAppear 0.2s linear;
@@ -185,4 +185,172 @@ textarea {
 	top: 0;
 	height: 100%;
 	width: 3%;
+}
+#leftsidebar {
+	position: absolute;
+	height: 380px;
+	width: 320px;
+	top: calc(50vh - 190px);
+	left: -25px;
+	user-select: none;
+}
+#leftsidebar .toolboxcontainer {
+	height: 50px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+.hidden .toolboxcontainer {
+	pointer-events: none;
+}
+#leftsidebar .toolboxcircle {
+	height: 50px;
+	width: 50px;
+	display: inline-block;
+	border-radius: 50px;
+	transition: all 0.2s ease-out;
+}
+.hidden .toolboxcircle {
+	border-radius: 0px !important;
+	width: 28px !important;
+	height: 55px !important;
+}
+#leftsidebar .toolboxcontainer:hover .toolboxcircle {
+	width: 100px;
+}
+#leftsidebar .toolboxtitle {
+	display: inline-block;
+	vertical-align: top;
+	margin: 5px;
+	font-family: "Secular";
+	transition: transform 0.2s ease-out;
+}
+.hidden .toolboxtitle {
+	transform: translateX(-320px);
+}
+.codeblocksopened #gamewindow {
+	transform: translate(min(50vw, 500px));
+}
+.codeblocksopened #leftside {
+	transform: translate(min(50vw, 500px));
+}
+.codeblocksopened .code {
+	height: 100vh;
+	top: 0;
+}
+.codeblocksopened .toolboxtitle {
+	text-shadow: 2px 2px 1px #0004;
+}
+.codeblocksopened .toolboxcircle {
+	box-shadow: 2px 0px 0px #0002;
+}
+#codeblocks {
+	position: absolute;
+	left: max(-50vw, -500px);
+	top: 0;
+	width: min(50vw, 500px);
+	height: 100vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#codeblocks #closingbutton {
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+#codeblocks .bg {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #0001;
+}
+#codeblocks #closingbutton:hover {
+	background-color: red;
+}
+#codeblocks #codeblockstitle {
+	color: white;
+	font-family: "Secular";
+	margin: 10px;
+	user-select: none;
+}
+#codeblocks #codeblockscontents {
+	background-color: white;
+	margin: 30px;
+	padding: 10px;
+	border-radius: 40px;
+	min-height: 100px;
+	box-shadow: inset 0px -4px 0px #0002, inset 0px 4px 0px #0002;
+	text-align: center;
+}
+#codeblockscontents .singlebox {
+	display: inline-block;
+	width: clamp(150px, 40%, 300px);
+	height: 100px;
+	position: relative;
+	background-color: black;
+	border-radius: 10px;
+	margin: 10px;
+	cursor: pointer;
+	overflow: hidden;
+	transition: all 0.2s ease-out;
+}
+#codeblockscontents .singlebox:hover {
+	transform: translateY(-5px);
+	height: 110px;
+	box-shadow: inset 0px -6px 0px #0004;
+	filter: brightness(1.1);
+}
+#codeblockscontents .singlebox .singleboxtitle {
+	font-family: "Secular";
+	font-size: 20px;
+	position: absolute;
+	top: 0;
+	color: white;
+	text-align: center;
+	width: 100%;
+}
+#codeblockscontents .singlebox .singleboxcode {
+	resize: none;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	opacity: 0.3;
+	color: white;
+	background-color: transparent;
+	pointer-events: none;
+}
+:root {
+	--boolean: #00CCFF;
+	--classes: #FF8800;
+	--numbers: #00FF00;
+	--default: #FFFFFF;
+	--special: #9999FF;
+	--strings: #FF77FF;
+	--comment: #999999;
+	--backgnd: #000000;
+	--tcursor: #FFFFFF;
+	--tselect: #444444;
+}
+.com {color: var(--comment);}
+.kwd {color: var(--boolean);}
+.typ {color: var(--classes);}
+.lit {color: var(--numbers);}
+.pln {color: var(--default);}
+.pun {color: var(--special);}
+.str {color: var(--strings);}
+::selection {
+	background: var(--tselect);
+}
+#inputcode {
+	caret-color: var(--tcursor);
+	background-color: var(--backgnd);
 }

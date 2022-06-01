@@ -7,17 +7,33 @@
 	<script src="microGameBuilder/run_prettify.js"></script>
 	<link rel="stylesheet" type="text/css" href="microGameBuilder/styles.css">
 	<link rel="stylesheet" type="text/css" href="microGameBuilder/logo.css">
-	<link rel="stylesheet" type="text/css" href="microGameBuilder/code.css">
 	<link rel="stylesheet" type="text/css" href="microGameBuilder/robot.css">
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-	<div id="toolbar">
-		<button onclick="openMenu('Import');">Import</button>
-		<button onclick="openMenu('Export');">Export</button>
-		<button onclick="openMenu('Share');">Share</button>
-		<button onclick="openMenu('Colors');">Colors</button>
-		<button onclick="openMenu('Help');">Help</button>
+	<div id="leftside">
+		<div id="toolbar">
+			<button style="color:#4D97FF" onclick="openMenu('Import');">Import</button>
+			<button style="color:#6F4FFF" onclick="openMenu('Export');">Export</button>
+			<button style="color:#C14FFF" onclick="openMenu('Share');">Share</button>
+			<button style="color:#FF4FC1" onclick="openMenu('Colors');">Colors</button>
+			<button style="color:#FF4F4F" onclick="openMenu('Help');">Help</button>
+		</div>
+		<textarea wrap="off" spellcheck="false" id="inputcode" class="code"></textarea>
+		<pre spellcheck="false" class="prettyprint lang-js code" id="outputcode"></pre>
+		<div id="codeblocks">
+			<div class="bg">
+			</div>
+			<svg id="closingbutton" width="50" height="50" onclick="document.body.classList.remove('codeblocksopened')">
+				<path d="M10,10 40,40 25,25 40,10 10,40" stroke-width="5" fill="none" stroke="#FFF">
+			</svg>
+			<h1 id="codeblockstitle"></h1>
+			<div id="codeblockscontents">
+				
+			</div>
+		</div>
+	</div>
+	<div id="leftsidebar" class="hidden">
 	</div>
 	<div id="floatingwindow" style="display:none;opacity:0">
 		<svg id="closingbutton" width="50" height="50" onclick="closeMenu()">
@@ -27,8 +43,6 @@
 		<div id="floatingwindowcontents">
 		</div>
 	</div>
-	<textarea wrap="off" spellcheck="false" id="inputcode" class="code"></textarea>
-	<pre spellcheck="false" class="prettyprint lang-js code" id="outputcode"></pre>
 	<div id="gamewindow"></div>
 	<div id="robot" style="display: none">
 		<div id="lock"></div>
@@ -63,8 +77,9 @@
 	</div>
 	<script type="text/javascript" src="microGameBuilder/main.js"></script>
 	<script type="text/javascript" src="microGameBuilder/code.js"></script>
+	<script type="text/javascript" src="microGameBuilder/blocks.js"></script>
 	<script type="text/javascript">
-		openMenu('Colors');
+		openBlocks(0)
 	</script>
 </body>
 </html>
