@@ -114,9 +114,9 @@ for (var b = 0; b < blocks.length; b ++) {
 	const color = blocks[b].color;
 	leftsidebar.innerHTML += `
 	<div class="toolboxcontainer" onclick="openBlocks(${b});">
-			<div class="toolboxcircle" style="background-color: ${color}">
-			</div>
-			<h1 class="toolboxtitle" style="color:${color}">${name}</h1>
+		<div class="toolboxcircle" style="background-color: ${color}">
+		</div>
+		<h1 class="toolboxtitle" style="color:${color}">${name}</h1>
 	</div>`
 }
 
