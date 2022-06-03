@@ -41,7 +41,7 @@ const player = new GameElement({
 	height: 100,
 	physics: true,
 	collidewalls: true,
-	gravityy: 0.15
+	gravityy: 0.5
 })
 
 // Callable function for spawning x diamonds
@@ -71,14 +71,14 @@ nextLevel();
 function draw() {
 	// Set the y velocity when pressing up
 	if (keyPress('ArrowUp')) {
-		player.yvel = -10;
+		player.yvel = -15;
 	}
 	// Change the x velocity when holding left or right
 	if (keyHeld('ArrowRight')) {
-		player.xvel += 0.2;
+		player.xvel += 0.5;
 	}
 	if (keyHeld('ArrowLeft')) {
-		player.xvel -= 0.2;
+		player.xvel -= 0.5;
 	}
 	// For every diamond
 	everyGameElementWithTheName("Diamond").forEach((diamond) => {

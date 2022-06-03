@@ -2,7 +2,7 @@ class GameElement {
 	constructor(params) {
 		this.name = (params.name ? params.name : "Unnamed");
 		this.width = (params.width ? params.width : 32);
-		this.height = (params.height ? params.height : 32);
+		this.height = (params.height ? params.height : this.width);
 		this.type = (params.type ? params.type : 'Rectangle');
 		switch (this.type) {
 			case 'Image':
@@ -39,8 +39,8 @@ class GameElement {
 		this.physics = (params.physics !== undefined ? params.physics : false);
 		this.gravityy = (params.gravityy !== undefined ? params.gravityy : 0);
 		this.gravityx = (params.gravityx !== undefined ? params.gravityx : 0);
-		this.static = (params.static !== undefined ? params.static : false)
-		this.visible = (params.visible !== undefined ? params.visible : true)
+		this.static = (params.static !== undefined ? params.static : false);
+		this.visible = (params.visible !== undefined ? params.visible : true);
 		this.continuousy = (params.continuousy !== undefined ? params.continuousy : 0);
 		this.continuousx = (params.continuousx !== undefined ? params.continuousx : 0);
 		this.continuousr = (params.continuousr !== undefined ? params.continuousr : 0);
@@ -61,7 +61,7 @@ class GameElement {
 		if (this.rotation !== 0 || this.scalex !== 1 || this.scaley !== 1) {
 			ctx.save();
 			ctx.translate(this.x, this.y);
-			ctx.scale(this.scalex, this.scaley)
+			ctx.scale(this.scalex, this.scaley);
 			ctx.rotate(this.rotation * Math.PI / 180);
 			ctx.translate(-this.x, -this.y);
 		}
@@ -73,11 +73,11 @@ class GameElement {
 				ctx.beginPath();
 				ctx.fillStyle = this.color;
 				ctx.ellipse(x, y, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
-				ctx.fill()
+				ctx.fill();
 				break;
 			case "Rectangle":
 				ctx.fillStyle = this.color;
-				ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
+				ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height);
 				break;
 			case "Image":
 				ctx.imageSmoothingEnabled = false;
@@ -89,24 +89,24 @@ class GameElement {
 					x - this.width / 2,
 					y - this.height / 2, 
 					this.width, 
-					this.height)
+					this.height);
 				break;
 			case "Text":
 			case "Number":
 				ctx.fillStyle = this.color;
 				ctx.font = this.width + "px " + this.font;
-				ctx.fillText(this.prefix + this.value, x, y + this.width)
+				ctx.fillText(this.prefix + this.value, x, y + this.width);
 				break;
 			case "Clickbox":
 				if (this.color !== undefined) {
 					ctx.fillStyle = this.color;
-					ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
+					ctx.fillRect(x - this.width / 2, y - this.height / 2, this.width, this.height);
 				} else if (debug_mode) {
 					ctx.globalAlpha = 0.5;
 					ctx.strokeStyle = 'black';
 					ctx.setLineDash([10, 8]);
-					ctx.lineWidth = 1
-					ctx.strokeRect(x - this.width / 2, y - this.height / 2, this.width, this.height)
+					ctx.lineWidth = 1;
+					ctx.strokeRect(x - this.width / 2, y - this.height / 2, this.width, this.height);
 				}
 				break;
 		}
@@ -125,7 +125,11 @@ class GameElement {
 		}
 	}
 
+	// Delete the object
 	delete() {
+		this.deleted = true;
+	}
+	remove() {
 		this.deleted = true;
 	}
 
@@ -133,27 +137,37 @@ class GameElement {
 	setNumber(value) {
 		if (this.type === 'Number') {
 			this.value = value;
+		} else {
+			log("You can't set the number for a non-number object.");
 		}
 	}
 	increaseNumber(value = 1) {
 		if (this.type === 'Number') {
 			this.value += value;
+		} else {
+			log("You can't increase the number for a non-number object.");
 		}
 	}
 	decreaseNumber(value = 1) {
 		if (this.type === 'Number') {
 			this.value -= value;
+		} else {
+			log("You can't decrease the number for a non-number object.");
 		}
 	}
 	// number functions
 	setText(text) {
 		if (this.type === 'Text') {
 			this.value = text;
+		} else {
+			log("You can't set text for a non-text object.");
 		}
 	}
 	addText(text) {
 		if (this.type === 'Text') {
 			this.value += text;
+		} else {
+			log("You can't add text for a non-text object.");
 		}
 	}
 
@@ -211,12 +225,6 @@ class GameElement {
 		}
 	}
 
-	// position functions
-	setPosition(x, y) {
-		this.x = x;
-		this.y = y;
-	}
-
 	// rotation functions
 	rotateClockwise(degrees) {
 		this.rotation += degrees;
@@ -229,11 +237,11 @@ class GameElement {
 	}
 }
 
-function everyGameElementWithTheName(name) {
+function everyGameElementWithTheName(targetName) {
 	const outputArray = [];
-	objects.forEach((obj) => {
-		if (obj.name === name) {
-			outputArray.push(obj);
+	objects.forEach((object) => {
+		if (object.name === targetName) {
+			outputArray.push(object);
 		}
 	})
 	return outputArray;
